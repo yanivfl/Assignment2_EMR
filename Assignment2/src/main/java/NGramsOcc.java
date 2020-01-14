@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -8,12 +9,12 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.File;
 import java.io.IOException;
 
-public class NGramsExample {
+public class NGramsOcc {
 
     public static class MapClass extends Mapper<LongWritable, Text, Text, IntWritable> {
         private final static IntWritable one = new IntWritable(1);
@@ -24,8 +25,7 @@ public class NGramsExample {
             String ngram = splitted[0];
 //            String year = splitted[1];
             String occurrences = splitted[2];
-            String[] ngram_words = ngram.split(" ");
-            context.write(new Text(ngram_words[0]+ ' ' + ngram_words[1] + ' ' + ngram_words[2]), new IntWritable(Integer.parseInt(occurrences)));
+            context.write(new Text(ngram), new IntWritable(Integer.parseInt(occurrences)));
         }
     }
 
@@ -48,35 +48,48 @@ public class NGramsExample {
 
     }
 
-    public static void main(String[] args) throws Exception {
-//        Configuration conf = new Configuration();
-//        Job job = new Job(conf, "word count");
-//        job.setJarByClass(NGramsExample.class);
-//        job.setMapperClass(MapClass.class);
-//        job.setPartitionerClass(PartitionerClass.class);
-//        job.setCombinerClass(ReduceClass.class);
-//        job.setReducerClass(ReduceClass.class);
-//        job.setOutputKeyClass(Text.class);
-//        job.setOutputValueClass(IntWritable.class);
-//        job.setInputFormatClass(SequenceFileInputFormat.class);
-//        FileInputFormat.addInputPath(job, new Path("../mini_corpus.txt"));
-//        FileOutputFormat.setOutputPath(job, new Path("output_corpus"));
-//        System.exit(job.waitForCompletion(true) ? 0 : 1);
 
+    /* Create a job instance for JOB_1_GRAM, N2, N3, C1, C2 */
+    private static Job CreateCounterJob(String jobName, String outputDirName, String inputPath) throws IOException {
+
+        Constants.clearOutput(outputDirName);
 
         Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "3rd word count");
-        job.setJarByClass(NGramsExample.class);
-        job.setMapperClass(NGramsExample.MapClass.class);
-        job.setCombinerClass(NGramsExample.ReduceClass.class);
-        job.setReducerClass(NGramsExample.ReduceClass.class);
+        Job job = Job.getInstance(conf, jobName);
+        job.setJarByClass(NGramsOcc.class);
+        job.setMapperClass(MapClass.class);
+        job.setPartitionerClass(PartitionerClass.class);
+        job.setCombinerClass(ReduceClass.class);
+        job.setReducerClass(ReduceClass.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job, new Path("/home/yaniv/workSpace/dsps/ASS2/Assignment2_dsps/mini_corpus.txt"));
-        FileOutputFormat.setOutputPath(job, new Path("output_corpus"));
-        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        FileInputFormat.addInputPath(job, new Path(inputPath));
+        FileOutputFormat.setOutputPath(job, new Path(outputDirName));
 
-
+        return job;
     }
 
+
+    public static Job[] createOccTables() {
+        Job job_1gram=null, job_2gram=null, job_3gram=null;
+
+        try {
+            job_1gram = CreateCounterJob(Constants.JOB_1_GRAM, Constants.OCC_1_GRAMS, Constants.CORPUS_1_GRAMS);
+            job_2gram = CreateCounterJob(Constants.JOB_2_GRAM, Constants.OCC_2_GRAMS, Constants.CORPUS_2_GRAMS);
+            job_3gram = CreateCounterJob(Constants.JOB_3_GRAM, Constants.OCC_3_GRAMS, Constants.CORPUS_3_GRAMS);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Job [] jobs = {job_1gram, job_2gram, job_3gram};
+        return jobs;
+
+
+
+//        System.exit(
+//                job_1gram.waitForCompletion(true) &&
+//                        job_2gram.waitForCompletion(true) &&
+//                        job_3gram.waitForCompletion(true)? 0 : 1);
+    }
 }

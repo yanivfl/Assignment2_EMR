@@ -8,7 +8,7 @@ import org.json.simple.parser.ParseException;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Constants {
+public class HandlerConstants {
 
     public static final String AMI = "ami-b66ed3de";
 //    public static final String KEY_PAIR = "YuvalKeyPair";

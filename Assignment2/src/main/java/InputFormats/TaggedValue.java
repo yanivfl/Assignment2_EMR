@@ -1,3 +1,5 @@
+package InputFormats;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -43,7 +45,7 @@ public class TaggedValue implements Writable {
 
     @Override
     public String toString() {
-        return "TaggedValue{" +
+        return "InputFormats.TaggedValue{" +
                 "tag=" + tag +
                 ", value=" + value +
                 ", initialKey=" + initialKey +

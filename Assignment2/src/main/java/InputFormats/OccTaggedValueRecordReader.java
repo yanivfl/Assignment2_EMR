@@ -1,5 +1,9 @@
+package InputFormats;
+
 import java.io.IOException;
 
+import InputFormats.TaggedValue;
+import Jobs.Constants;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.RecordReader;
@@ -7,10 +11,10 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
 
 
-public abstract class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
+public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
 
-    protected LineRecordReader reader;
-    protected TaggedValue value;
+    private LineRecordReader reader;
+    private TaggedValue value;
 
     private boolean w1;
     private boolean w2;

@@ -1,5 +1,6 @@
 import org.apache.commons.io.FileUtils;
 
+import org.apache.hadoop.io.Text;
 import java.io.File;
 import java.io.IOException;
 
@@ -34,6 +35,12 @@ public class Constants {
     public static final String WORD_COUNT_C0 = "word_count_C0";
 
     //// output directories names - s3 TODO
+
+
+    // tags
+    public static final Text TAG_1_OCC = new Text("TAG_1_OCC");
+    public static final Text TAG_2_OCC = new Text("TAG_2_OCC");
+    public static final Text TAG_3_OCC = new Text("TAG_3_OCC");
 
 
     /* If there is an output folder, delete it */

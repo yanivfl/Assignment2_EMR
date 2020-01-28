@@ -23,6 +23,11 @@ public class Constants {
     public static final String JOB_2_GRAM = "JOB_2_GRAM";
     public static final String JOB_3_GRAM = "JOB_3_GRAM";
     public static final String JOB_C0 = "JOB_C0";
+    public static final String JOB_JOIN_N1 = "JOB_JOIN_N1";
+    public static final String JOB_JOIN_N2 = "JOB_JOIN_N2";
+    public static final String JOB_JOIN_C1 = "JOB_JOIN_C1";
+    public static final String JOB_JOIN_C2 = "JOB_JOIN_C2";
+
 
 //    public static final String N2 = "N2";
 //    public static final String N3 = "N3";
@@ -35,14 +40,15 @@ public class Constants {
     public static final String OCC_2_GRAMS = "mini_counter_2_grams";
     public static final String OCC_3_GRAMS = "mini_counter_3_grams";
     public static final String WORD_COUNT_C0 = "word_count_C0";
+    public static final String JOIN_OUTPUT = "join";
 
     //// output directories names - s3 TODO
 
 
     // tags
-    public static final Text TAG_1_OCC = new Text("TAG_1_OCC");
-    public static final Text TAG_2_OCC = new Text("TAG_2_OCC");
-    public static final Text TAG_3_OCC = new Text("TAG_3_OCC");
+    public static final Text TAG_1_OCC = new Text("1");
+    public static final Text TAG_2_OCC = new Text("2");
+    public static final Text TAG_3_OCC = new Text("3");
 
 
     /* If there is an output folder, delete it */

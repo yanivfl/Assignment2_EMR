@@ -2,7 +2,6 @@ package InputFormats;
 
 import java.io.IOException;
 
-import InputFormats.TaggedValue;
 import Jobs.Constants;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;

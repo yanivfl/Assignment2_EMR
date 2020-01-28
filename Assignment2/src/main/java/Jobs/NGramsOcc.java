@@ -84,12 +84,5 @@ public class NGramsOcc {
 
         Job [] jobs = {job_1gram, job_2gram, job_3gram};
         return jobs;
-
-
-
-//        System.exit(
-//                job_1gram.waitForCompletion(true) &&
-//                        job_2gram.waitForCompletion(true) &&
-//                        job_3gram.waitForCompletion(true)? 0 : 1);
     }
 }

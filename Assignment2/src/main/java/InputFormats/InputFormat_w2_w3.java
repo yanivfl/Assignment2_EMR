@@ -12,14 +12,15 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 
-public class InputFormat_C1 extends FileInputFormat<Text, TaggedValue> {
+public class InputFormat_w2_w3 extends FileInputFormat<Text, TaggedValue> {
 
 
     @Override
     public RecordReader<Text, TaggedValue>
     createRecordReader(InputSplit split,
                        TaskAttemptContext context) {
-        return new OccTaggedValueRecordReader(false, true, false, Constants.TAG_1_OCC);
+
+        return new OccTaggedValueRecordReader(false, true, true, Constants.TAG_3_OCC);
     }
 
     @Override

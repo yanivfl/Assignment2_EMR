@@ -13,7 +13,7 @@ import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
 public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
 
     private LineRecordReader reader;
-    private TaggedValue value;
+    private Text tag;
 
     private boolean w1;
     private boolean w2;
@@ -25,7 +25,7 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
         this.w2 = w2;
         this.w3 = w3;
         reader = new LineRecordReader();
-        value = new TaggedValue(tag);
+        this.tag = new Text(tag);
     }
 
 
@@ -43,18 +43,21 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
 
     @Override
     public boolean nextKeyValue() throws IOException {
+//        Constants.printDebug("nextKeyValue");
         return reader.nextKeyValue();
     }
 
 
     @Override
     public Text getCurrentKey() {
+//        Constants.printDebug("getCurrentKey");
         return parseKey(reader.getCurrentValue().toString());
     }
 
 
     @Override
     public TaggedValue getCurrentValue() throws IOException {
+//        Constants.printDebug("getCurrentValue");
         return parseValue(reader.getCurrentValue().toString());
     }
 
@@ -72,14 +75,16 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
                 .substring(0, str.indexOf('\t'))
                 .split(" ");
 
+
         String key = "";
         if (w1)
             key += ngram[0];
         if (w2)
-            key += ngram[2];
+            key += ngram[1];
         if (w3)
-            key += ngram[3];
+            key += ngram[2];
 
+//        Constants.printDebug("parseKey");
         return new Text(key);
     }
 
@@ -89,14 +94,18 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
         String initial_key = str.substring( 0, str.indexOf('\t'));
         String value = str.substring(str.indexOf('\t')+1);
 
+        TaggedValue tagged_value = new TaggedValue();
+
         // line structure: ngram \t v1 v2 v3...
 
-        if (this.value.getTag().equals(Constants.TAG_3_OCC)){
-            this.value.setInitialKey(new Text(initial_key));
+        if (tag.equals(Constants.TAG_3_OCC)){
+            tagged_value.setInitialKey(new Text(initial_key));
         }
 
-        this.value.setValue(new Text(value));
-        return this.value;
+        tagged_value.setValue(new Text(value));
+
+//        Constants.printDebug("parseValue");
+        return tagged_value;
     }
 
 }

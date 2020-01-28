@@ -12,7 +12,9 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 
-public class InputFormat_N1 extends FileInputFormat<Text, TaggedValue> {
+public class InputFormat_w1 extends FileInputFormat<Text, TaggedValue> {
+
+
 
 
     @Override
@@ -20,7 +22,7 @@ public class InputFormat_N1 extends FileInputFormat<Text, TaggedValue> {
     createRecordReader(InputSplit split,
                        TaskAttemptContext context) {
         Constants.printDebug("ola amigo");
-        return new OccTaggedValueRecordReader(false, false, true, Constants.TAG_1_OCC);
+        return new OccTaggedValueRecordReader(true, false, false, Constants.TAG_1_OCC);
     }
 
     @Override

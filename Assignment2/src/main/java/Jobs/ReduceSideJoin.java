@@ -2,39 +2,29 @@ package Jobs;
 
 import java.io.IOException;
 
-import InputFormats.InputFormat_N1;
-import InputFormats.InputFormat_N3;
+import InputFormats.InputFormat_w1;
+import InputFormats.InputFormat_w3;
 import InputFormats.TaggedKey;
 import InputFormats.TaggedValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.*;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 
 public class ReduceSideJoin {
 
 
-    public static class MapClass extends Mapper<LongWritable, Text, TaggedKey, TaggedValue> {
+    public static class MapClass extends Mapper<Text, TaggedValue, TaggedKey, TaggedValue> {
 
         @Override
-        public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            TaggedKey tag_key = new TaggedKey(value, value);
+        public void map(Text key, TaggedValue value, Context context) throws IOException, InterruptedException {
 
-            TaggedValue tag_value = new TaggedValue(new Text("1"));
-            tag_value.setInitialKey(value);
-            tag_value.setValue(value);
-
-
-            context.write(tag_key, tag_value);
+            context.write(new TaggedKey(key, value.getTag()), value);
 //            Constants.printDebug("map - tagged key: "+ key + ", " + value.getTag());
-            Constants.printDebug("map - tagged key: ");
         }
     }
 
@@ -115,8 +105,8 @@ public class ReduceSideJoin {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 //        FileInputFormat.addInputPath(job, new Path(inputPath1));
-        MultipleInputs.addInputPath(job, new Path(inputPath1), TextInputFormat.class, MapClass.class);
-        MultipleInputs.addInputPath(job, new Path(inputPath2), TextInputFormat.class, MapClass.class);
+        MultipleInputs.addInputPath(job, new Path(inputPath1), InputFormat_w3.class, MapClass.class);   // get only w3 as a key
+        MultipleInputs.addInputPath(job, new Path(inputPath2), InputFormat_w1.class, MapClass.class);
         FileOutputFormat.setOutputPath(job, new Path(outputDirName));
 
 
@@ -129,7 +119,7 @@ public class ReduceSideJoin {
         Job job_join_N1=null;
 
         try {
-            job_join_N1 = CreateJoinJob(Constants.JOB_JOIN_N1, Constants.JOIN_OUTPUT, Constants.OCC_3_GRAMS_OUTPUT, Constants.OCC_1_GRAMS_OUTPUT, new InputFormat_N1());
+            job_join_N1 = CreateJoinJob(Constants.JOB_JOIN_N1, Constants.JOIN_OUTPUT, Constants.OCC_3_GRAMS_OUTPUT, Constants.OCC_1_GRAMS_OUTPUT, new InputFormat_w3());
         }
         catch (IOException e) {
             e.printStackTrace();

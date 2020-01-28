@@ -19,6 +19,7 @@ public class InputFormat_N3 extends FileInputFormat<Text, TaggedValue> {
     public RecordReader<Text, TaggedValue>
     createRecordReader(InputSplit split,
                        TaskAttemptContext context) {
+        Constants.printDebug("bien , e to?");
         return new OccTaggedValueRecordReader(true, true, true, Constants.TAG_3_OCC);
     }
 

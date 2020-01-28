@@ -59,7 +59,7 @@ public class WordCounter {
     public static Job createWordCountTable() {
 
         try {
-            return CreateWordCountJob(Constants.JOB_C0, Constants.WORD_COUNT_C0, Constants.OCC_1_GRAMS);
+            return CreateWordCountJob(Constants.JOB_C0, Constants.WORD_COUNT_C0_OUTPUT, Constants.OCC_1_GRAMS_OUTPUT);
         }
         catch (IOException e) {
             e.printStackTrace();

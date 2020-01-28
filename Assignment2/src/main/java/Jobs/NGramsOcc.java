@@ -74,9 +74,9 @@ public class NGramsOcc {
         Job job_1gram=null, job_2gram=null, job_3gram=null;
 
         try {
-            job_1gram = CreateCounterJob(Constants.JOB_1_GRAM, Constants.OCC_1_GRAMS, Constants.CORPUS_1_GRAMS);
-            job_2gram = CreateCounterJob(Constants.JOB_2_GRAM, Constants.OCC_2_GRAMS, Constants.CORPUS_2_GRAMS);
-            job_3gram = CreateCounterJob(Constants.JOB_3_GRAM, Constants.OCC_3_GRAMS, Constants.CORPUS_3_GRAMS);
+            job_1gram = CreateCounterJob(Constants.JOB_1_GRAM, Constants.OCC_1_GRAMS_OUTPUT, Constants.CORPUS_1_GRAMS);
+            job_2gram = CreateCounterJob(Constants.JOB_2_GRAM, Constants.OCC_2_GRAMS_OUTPUT, Constants.CORPUS_2_GRAMS);
+            job_3gram = CreateCounterJob(Constants.JOB_3_GRAM, Constants.OCC_3_GRAMS_OUTPUT, Constants.CORPUS_3_GRAMS);
         }
         catch (IOException e) {
             e.printStackTrace();

@@ -89,13 +89,14 @@ public class ReduceSideJoin {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, jobName);
         job.setJarByClass(ReduceSideJoin.class);
-        job.setMapperClass(MapClass.class);
+        //job.setMapperClass(MapClass.class);
         job.setPartitionerClass(PartitionerClass.class);
         job.setReducerClass(ReduceClass.class);
         job.setMapOutputKeyClass(TaggedKey.class);
         job.setMapOutputValueClass(TaggedValue.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
+
         MultipleInputs.addInputPath(job, new Path(inputPath1), InputFormat_N3.class, MapClass.class);
         MultipleInputs.addInputPath(job, new Path(inputPath2), formatToJoin.getClass(), MapClass.class);
         FileOutputFormat.setOutputPath(job, new Path(outputDirName));

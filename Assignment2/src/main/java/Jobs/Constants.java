@@ -10,9 +10,9 @@ public class Constants {
 
 
     // mini-examples corpus ngrams file names
-    public static final String CORPUS_1_GRAMS = "mini_corpus_1_grams";
-    public static final String CORPUS_2_GRAMS = "mini_corpus_2_grams";
-    public static final String CORPUS_3_GRAMS = "mini_corpus_3_grams";
+    public static final String CORPUS_1_GRAMS = "mini_corpus_1_grams.txt";
+    public static final String CORPUS_2_GRAMS = "mini_corpus_2_grams.txt";
+    public static final String CORPUS_3_GRAMS = "mini_corpus_3_grams.txt";
 
 
     // corpus ngrams S3 paths
@@ -53,15 +53,15 @@ public class Constants {
 
     /* If there is an output folder, delete it */
     public static void clearOutput(String path) {
-//        File file = new File(path);
-//
-//        if (file.exists())  {
-//            try {
-//                FileUtils.deleteDirectory(file);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        File file = new File(path);
+
+        if (file.exists())  {
+            try {
+                FileUtils.deleteDirectory(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

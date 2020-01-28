@@ -10,7 +10,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 
-public class TaggedKey implements WritableComparable<TaggedKey> {
+public class TaggedKey implements Writable, WritableComparable<TaggedKey> {
 
     // An implementation of key with tag, as a writable object
 
@@ -20,6 +20,11 @@ public class TaggedKey implements WritableComparable<TaggedKey> {
     public TaggedKey(Text key, Text tag) {
         this.key = key;
         this.tag = tag;
+    }
+
+    public TaggedKey() {
+        this.key = new Text();
+        this.tag = new Text();
     }
 
     @Override
@@ -60,6 +65,12 @@ public class TaggedKey implements WritableComparable<TaggedKey> {
 
     @Override
     public int compareTo(TaggedKey o) {
-        return tag.toString().compareTo(o.getTag().toString());
+        Constants.printDebug("here?");
+//        return tag.toString().compareTo(o.getTag().toString());
+        return 1;
+    }
+
+    public void setKey(Text value) {
+        this.key = new Text(value.toString());
     }
 }

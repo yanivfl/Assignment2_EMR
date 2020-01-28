@@ -18,15 +18,15 @@ public class TaggedValue implements Writable {
     private Text initialKey;
 
     TaggedValue() {
-        tag = null;
-        value = null;
-        initialKey = null;
+        tag = new Text();
+        value = new Text();
+        initialKey = new Text();
     }
 
-    TaggedValue(Text tag) {
-        this.tag = tag;
-        this.initialKey = null;
-        this.value = null;
+    public TaggedValue(Text tag) {
+        this.tag = new Text(tag);
+        this.initialKey = new Text();
+        this.value = new Text();
     }
 
     @Override
@@ -72,10 +72,10 @@ public class TaggedValue implements Writable {
     }
 
     public void setValue(Text value) {
-        this.value = value;
+        this.value = new Text(value);
     }
 
     public void setInitialKey(Text initialKey) {
-        this.initialKey = initialKey;
+        this.initialKey = new Text(initialKey);
     }
 }

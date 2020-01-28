@@ -21,67 +21,74 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class ReduceSideJoin {
 
 
-    public static class MapClass extends Mapper<LongWritable, Text, TaggedKey, Text> {
+    public static class MapClass extends Mapper<LongWritable, Text, TaggedKey, TaggedValue> {
 
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            TaggedKey tag_key = new TaggedKey();
-            tag_key.setKey(value);
-            context.write(tag_key, value);
+            TaggedKey tag_key = new TaggedKey(value, value);
+
+            TaggedValue tag_value = new TaggedValue(new Text("1"));
+            tag_value.setInitialKey(value);
+            tag_value.setValue(value);
+
+
+            context.write(tag_key, tag_value);
 //            Constants.printDebug("map - tagged key: "+ key + ", " + value.getTag());
             Constants.printDebug("map - tagged key: ");
         }
     }
 
 
-    public static class ReduceClass extends Reducer<TaggedKey, Text, Text, Text> {
+    public static class ReduceClass extends Reducer<TaggedKey, TaggedValue, Text, Text> {
 
-//        Object currentTag = null;
-//        WritableComparable currentKey = null;
-//        TaggedValue OccValue = null;
-//        boolean writeMode = false;
+        Object currentTag = null;
+        WritableComparable currentKey = null;
+        TaggedValue OccValue = null;
+        boolean writeMode = false;
 
         @Override
-        public void reduce(TaggedKey taggedKey, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            for(Text value : values){
-                context.write(taggedKey.getKey(), value);
+        public void reduce(TaggedKey taggedKey, Iterable<TaggedValue> values, Context context) throws IOException, InterruptedException {
+            Constants.printDebug("reducer plz");
+            for(TaggedValue value : values){
+                context.write(taggedKey.getKey(), value.getValue());
             }
 
-//            if (currentKey == null || !currentKey.equals(taggedKey.getKey())) {
-//                OccValue = null;
-//                writeMode = false;
-//            } else
-//                writeMode = (currentTag != null && !currentTag.equals(taggedKey.getTag()));
-//
-//            if (writeMode)
-//                crossProduct(values, context);
-//            else {
-//                for (TaggedValue value : values) //values will contain 1 value
-//                    OccValue = value;
-//            }
-//
-//            currentTag = taggedKey.getTag();
-//            currentKey = taggedKey.getKey();
+            if (currentKey == null || !currentKey.equals(taggedKey.getKey())) {
+                OccValue = null;
+                writeMode = false;
+            } else
+                writeMode = (currentTag != null && !currentTag.equals(taggedKey.getTag()));
+
+            if (writeMode)
+                crossProduct(values, context);
+            else {
+                for (TaggedValue value : values) //values will contain 1 value
+                    OccValue = value;
+            }
+
+            currentTag = taggedKey.getTag();
+            currentKey = taggedKey.getKey();
         }
 
-//        private void crossProduct(Iterable<TaggedValue> table2Values, Context context) throws IOException, InterruptedException {
-//            // This specific implementation of the cross product, combine the data of the customers and the orders (
-//            // of a given costumer id).
-//            for (TaggedValue table2Value : table2Values) {
-//                context.write(
-//                        new Text(table2Value.getInitialKey()),
-//                        new Text(table2Value.getValue().toString() + "\t" + OccValue.getValue().toString()));
-//
-//                Constants.printDebug("key: " + table2Value.getInitialKey() +", "+table2Value.getValue().toString() + "\t" + OccValue.getValue().toString());
-//            }
-//
-//        }
+        private void crossProduct(Iterable<TaggedValue> table2Values, Context context) throws IOException, InterruptedException {
+            // This specific implementation of the cross product, combine the data of the customers and the orders (
+            // of a given costumer id).
+            for (TaggedValue table2Value : table2Values) {
+                context.write(
+                        new Text(table2Value.getInitialKey()),
+                        new Text(table2Value.getValue().toString() + "\t" + OccValue.getValue().toString()));
+
+                Constants.printDebug("key: " + table2Value.getInitialKey() +", "+table2Value.getValue().toString() + "\t" + OccValue.getValue().toString());
+            }
+
+        }
     }
 
-    public static class PartitionerClass extends Partitioner<TaggedKey, Text> {
+    public static class PartitionerClass extends Partitioner<TaggedKey, TaggedValue> {
         // ensure that keys with same key are directed to the same reducer
         @Override
-        public int getPartition(TaggedKey key, Text value, int numPartitions) {
+        public int getPartition(TaggedKey key, TaggedValue value, int numPartitions) {
+            Constants.printDebug("partition plz");
             return key.getKey().toString().hashCode() % numPartitions;
         }
     }
@@ -103,7 +110,7 @@ public class ReduceSideJoin {
 
 
         job.setMapOutputKeyClass(TaggedKey.class);
-        job.setMapOutputValueClass(Text.class);
+        job.setMapOutputValueClass(TaggedValue.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);

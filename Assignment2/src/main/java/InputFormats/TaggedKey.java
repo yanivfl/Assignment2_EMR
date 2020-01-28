@@ -18,8 +18,8 @@ public class TaggedKey implements Writable, WritableComparable<TaggedKey> {
     private Text key;
 
     public TaggedKey(Text key, Text tag) {
-        this.key = key;
-        this.tag = tag;
+        this.key = new Text(key);
+        this.tag = new Text(tag);
     }
 
     public TaggedKey() {
@@ -65,12 +65,14 @@ public class TaggedKey implements Writable, WritableComparable<TaggedKey> {
 
     @Override
     public int compareTo(TaggedKey o) {
-        Constants.printDebug("here?");
-//        return tag.toString().compareTo(o.getTag().toString());
-        return 1;
+        return tag.toString().compareTo(o.getTag().toString());
     }
 
-    public void setKey(Text value) {
-        this.key = new Text(value.toString());
+    public void setKey(Text key) {
+        this.key = new Text(key.toString());
+    }
+
+    public void setTag(Text tag) {
+        this.key = new Text(tag.toString());
     }
 }

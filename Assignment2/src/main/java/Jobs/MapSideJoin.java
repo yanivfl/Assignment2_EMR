@@ -58,14 +58,11 @@ public class MapSideJoin {
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                context.getCounter(MYCOUNTER.FILE_NOT_FOUND).increment(1);
             } catch (IOException e) {
-                context.getCounter(MYCOUNTER.SOME_OTHER_ERROR).increment(1);
                 e.printStackTrace();
             }finally {
                 if (brReader != null) {
                     brReader.close();
-
                 }
 
             }
@@ -78,7 +75,6 @@ public class MapSideJoin {
             String[] splitted = value.toString().split("\t");
             String ngram = splitted[0];
             String values = value.toString().substring(value.toString().indexOf('\t')+1);
-            String occurrences = splitted[2];
             context.write(new Text(ngram), new Text(values + '\t' + C0_data.get("C0")));
 
 
@@ -90,8 +86,7 @@ public class MapSideJoin {
 
 
     /* Create a job instance for N1, N2, N3, C1, C2 */
-    private static Job CreateJoinJob(String jobName, String outputDirName, String inputPath1, InputFormat formatToJoin1,
-                                     String inputPath2, InputFormat formatToJoin2) throws IOException {
+    private static Job CreateJoinJob(String jobName, String outputDirName, String inputPath1) throws IOException {
 
         Constants.clearOutput(outputDirName);
 
@@ -116,8 +111,7 @@ public class MapSideJoin {
         try {
             // The reducer join output file will be from the following format ((w1,w2,w3) N3 N1 N2 C1 C2)
 
-            job_join_C0 = CreateJoinJob(Constants.JOB_JOIN_C0, Constants.JOIN_OUTPUT4, Constants.JOIN_OUTPUT3,
-                    new InputFormat_w1_w2_w3(), Constants.WORD_COUNT_C0_OUTPUT, new InputFormat_w1());
+            job_join_C0 = CreateJoinJob(Constants.JOB_JOIN_C0, Constants.JOIN_OUTPUT4, Constants.JOIN_OUTPUT3);
         }
         catch (IOException e) {
             e.printStackTrace();

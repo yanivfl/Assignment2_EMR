@@ -27,6 +27,7 @@ public class Constants {
     public static final String JOB_JOIN_N2 = "JOB_JOIN_N2";
     public static final String JOB_JOIN_C1 = "JOB_JOIN_C1";
     public static final String JOB_JOIN_C2 = "JOB_JOIN_C2";
+    public static final String JOB_JOIN_C0 = "JOB_JOIN_C0";
 
 
 //    public static final String N2 = "N2";
@@ -44,6 +45,7 @@ public class Constants {
     public static final String JOIN_OUTPUT1 = "join1";
     public static final String JOIN_OUTPUT2 = "join2";
     public static final String JOIN_OUTPUT3 = "join3";
+    public static final String JOIN_OUTPUT4 = "join4";
 
     //// output directories names - s3 TODO
 
@@ -56,15 +58,15 @@ public class Constants {
 
     /* If there is an output folder, delete it */
     public static void clearOutput(String path) {
-        File file = new File(path);
-
-        if (file.exists())  {
-            try {
-                FileUtils.deleteDirectory(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        File file = new File(path);
+//
+//        if (file.exists())  {
+//            try {
+//                FileUtils.deleteDirectory(file);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 

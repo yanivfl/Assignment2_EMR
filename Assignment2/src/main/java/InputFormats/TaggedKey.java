@@ -29,14 +29,14 @@ public class TaggedKey implements Writable, WritableComparable<TaggedKey> {
 
     @Override
     public void readFields(DataInput data) throws IOException {
-        tag.readFields(data);
         key.readFields(data);
+        tag.readFields(data);
     }
 
     @Override
     public void write(DataOutput data) throws IOException {
-        tag.write(data);
         key.write(data);
+        tag.write(data);
     }
 
     @Override
@@ -65,7 +65,15 @@ public class TaggedKey implements Writable, WritableComparable<TaggedKey> {
 
     @Override
     public int compareTo(TaggedKey o) {
-        return tag.toString().compareTo(o.getTag().toString());
+
+        // compare by keys, if they are equal, compare by tag
+        int comp = this.key.toString().compareTo(o.getKey().toString());
+
+        if (comp == 0)
+            return this.tag.toString().compareTo(o.getTag().toString());
+
+        return comp;
+
     }
 
     public void setKey(Text key) {

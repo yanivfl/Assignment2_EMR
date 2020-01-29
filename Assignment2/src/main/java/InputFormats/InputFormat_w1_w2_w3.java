@@ -19,7 +19,6 @@ public class InputFormat_w1_w2_w3 extends FileInputFormat<Text, TaggedValue> {
     public RecordReader<Text, TaggedValue>
     createRecordReader(InputSplit split,
                        TaskAttemptContext context) {
-        Constants.printDebug("bien , e to?");
         return new OccTaggedValueRecordReader(true, true, true, Constants.TAG_3_OCC);
     }
 

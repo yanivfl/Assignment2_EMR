@@ -23,52 +23,65 @@ public class ReduceSideJoin {
         @Override
         public void map(Text key, TaggedValue value, Context context) throws IOException, InterruptedException {
 
-            context.write(new TaggedKey(key, value.getTag()), value);
-//            Constants.printDebug("map - tagged key: "+ key + ", " + value.getTag());
+            TaggedKey newKey = new TaggedKey(key, value.getTag());
+            context.write(newKey, value);
+            Constants.printDebug("newKey: "+newKey.toString());
+            //Constants.printDebug("map - tagged key: "+ key + ", tag: " + value.getTag() + ", initial key: "+value.getInitialKey());
         }
     }
 
 
     public static class ReduceClass extends Reducer<TaggedKey, TaggedValue, Text, Text> {
 
-        Object currentTag = null;
-        WritableComparable currentKey = null;
-        TaggedValue OccValue = null;
+        Text currentTag = null;
+        Text currentKey = null;
+        Text OccValue = null;
         boolean writeMode = false;
 
         @Override
         public void reduce(TaggedKey taggedKey, Iterable<TaggedValue> values, Context context) throws IOException, InterruptedException {
-            Constants.printDebug("reducer plz");
-            for(TaggedValue value : values){
-                context.write(taggedKey.getKey(), value.getValue());
-            }
-
+            Constants.printDebug("reduce: key-"+taggedKey.toString());
+            Constants.printDebug("OccValue=" + OccValue + ", writeMode="+writeMode+", currentTag="+currentTag+", currentKey="+currentKey);
             if (currentKey == null || !currentKey.equals(taggedKey.getKey())) {
+                Constants.printDebug("1 if");
                 OccValue = null;
                 writeMode = false;
-            } else
+            } else {
+                Constants.printDebug("2 if");
                 writeMode = (currentTag != null && !currentTag.equals(taggedKey.getTag()));
-
-            if (writeMode)
-                crossProduct(values, context);
-            else {
-                for (TaggedValue value : values) //values will contain 1 value
-                    OccValue = value;
             }
 
-            currentTag = taggedKey.getTag();
-            currentKey = taggedKey.getKey();
+            if (writeMode) {
+                Constants.printDebug("3 if");
+                crossProduct(values, context);
+            }
+            else {
+                Constants.printDebug("4 if");
+                Constants.printDebug("values:");
+                for (TaggedValue value : values) {//values will contain 1 value
+                    OccValue = new Text(value.getValue());
+                    Constants.printDebug("\t" +value);
+                }
+            }
+
+            currentTag = new Text(taggedKey.getTag());
+            currentKey = new Text(taggedKey.getKey());
+
+            Constants.printDebug("changed currKey to: "+currentKey+", and currTag to: "+currentTag);
         }
 
         private void crossProduct(Iterable<TaggedValue> table2Values, Context context) throws IOException, InterruptedException {
             // This specific implementation of the cross product, combine the data of the customers and the orders (
             // of a given costumer id).
+            Constants.printDebug("crossProduct:");
             for (TaggedValue table2Value : table2Values) {
+                Constants.printDebug("\tinit key: " +table2Value.getInitialKey());
+                Constants.printDebug("\tvalue: " +table2Value.getValue());
                 context.write(
                         new Text(table2Value.getInitialKey()),
-                        new Text(table2Value.getValue().toString() + "\t" + OccValue.getValue().toString()));
+                        new Text(table2Value.getValue().toString() + "\t" + OccValue.toString()));
 
-                Constants.printDebug("key: " + table2Value.getInitialKey() +", "+table2Value.getValue().toString() + "\t" + OccValue.getValue().toString());
+                Constants.printDebug("key: " + table2Value.getInitialKey() +", "+table2Value.getValue().toString() + "\t" + OccValue.toString());
             }
 
         }
@@ -79,14 +92,14 @@ public class ReduceSideJoin {
         @Override
         public int getPartition(TaggedKey key, TaggedValue value, int numPartitions) {
             Constants.printDebug("partition plz");
-            return key.getKey().toString().hashCode() % numPartitions;
+            return key.getKey().hashCode() % numPartitions;
         }
     }
 
 
     /* Create a job instance for N1, N2, N3, C1, C2 */
     private static Job CreateJoinJob(String jobName, String outputDirName, String inputPath1, String inputPath2,
-                                     InputFormat formatToJoin) throws IOException {
+                                     InputFormat formatToJoin1, InputFormat formatToJoin2) throws IOException {
 
         // TODO: this may cause bugs!!
         Constants.clearOutput(outputDirName);
@@ -105,8 +118,8 @@ public class ReduceSideJoin {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 //        FileInputFormat.addInputPath(job, new Path(inputPath1));
-        MultipleInputs.addInputPath(job, new Path(inputPath1), InputFormat_w3.class, MapClass.class);   // get only w3 as a key
-        MultipleInputs.addInputPath(job, new Path(inputPath2), InputFormat_w1.class, MapClass.class);
+        MultipleInputs.addInputPath(job, new Path(inputPath1), formatToJoin1.getClass(), MapClass.class);
+        MultipleInputs.addInputPath(job, new Path(inputPath2), formatToJoin2.getClass(), MapClass.class);
         FileOutputFormat.setOutputPath(job, new Path(outputDirName));
 
 
@@ -119,7 +132,8 @@ public class ReduceSideJoin {
         Job job_join_N1=null;
 
         try {
-            job_join_N1 = CreateJoinJob(Constants.JOB_JOIN_N1, Constants.JOIN_OUTPUT, Constants.OCC_3_GRAMS_OUTPUT, Constants.OCC_1_GRAMS_OUTPUT, new InputFormat_w3());
+            job_join_N1 = CreateJoinJob(Constants.JOB_JOIN_N1, Constants.JOIN_OUTPUT, Constants.OCC_3_GRAMS_OUTPUT,
+                    Constants.OCC_1_GRAMS_OUTPUT, new InputFormat_w3(), new InputFormat_w1());
         }
         catch (IOException e) {
             e.printStackTrace();

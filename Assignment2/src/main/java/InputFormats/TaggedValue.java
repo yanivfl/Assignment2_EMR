@@ -32,20 +32,20 @@ public class TaggedValue implements Writable {
     @Override
     public void readFields(DataInput data) throws IOException {
         tag.readFields(data);
-        value.readFields(data);
         initialKey.readFields(data);
+        value.readFields(data);
     }
 
     @Override
     public void write(DataOutput data) throws IOException {
         tag.write(data);
-        value.write(data);
         initialKey.write(data);
+        value.write(data);
     }
 
     @Override
     public String toString() {
-        return "InputFormats.TaggedValue{" +
+        return "TaggedValue{" +
                 "tag=" + tag +
                 ", value=" + value +
                 ", initialKey=" + initialKey +
@@ -77,5 +77,9 @@ public class TaggedValue implements Writable {
 
     public void setInitialKey(Text initialKey) {
         this.initialKey = new Text(initialKey);
+    }
+
+    public void setTag(Text tag) {
+        this.tag = tag;
     }
 }

@@ -50,7 +50,7 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
 
     @Override
     public Text getCurrentKey() {
-//        Constants.printDebug("getCurrentKey");
+        // reader key is the line number, we need to extract the key we want from the reader.value
         return parseKey(reader.getCurrentValue().toString());
     }
 
@@ -75,6 +75,7 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
                 .substring(0, str.indexOf('\t'))
                 .split(" ");
 
+        //Constants.printDebug("ngrams full str: "+str + " w1: " + w1+ " w2: " + w2+ " w3: " + w3);
 
         String key = "";
         if (w1)
@@ -103,6 +104,7 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
         }
 
         tagged_value.setValue(new Text(value));
+        tagged_value.setTag(new Text(this.tag));
 
 //        Constants.printDebug("parseValue");
         return tagged_value;

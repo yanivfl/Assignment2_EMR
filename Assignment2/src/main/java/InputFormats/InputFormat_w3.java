@@ -19,7 +19,6 @@ public class InputFormat_w3 extends FileInputFormat<Text, TaggedValue> {
     public RecordReader<Text, TaggedValue>
     createRecordReader(InputSplit split,
                        TaskAttemptContext context) {
-        Constants.printDebug("ola amigo");
         return new OccTaggedValueRecordReader(false, false, true, Constants.TAG_3_OCC);
     }
 

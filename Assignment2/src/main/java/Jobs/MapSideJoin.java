@@ -1,18 +1,17 @@
 package Jobs;
 
-import java.io.IOException;
-
 import InputFormats.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.IOException;
 
-public class ReduceSideJoin {
+
+public class MapSideJoin {
 
 
     public static class MapClass extends Mapper<Text, TaggedValue, TaggedKey, TaggedValue> {
@@ -102,7 +101,7 @@ public class ReduceSideJoin {
 
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, jobName);
-        job.setJarByClass(ReduceSideJoin.class);
+        job.setJarByClass(MapSideJoin.class);
 //        job.setMapperClass(MapClass.class);
         job.setPartitionerClass(PartitionerClass.class);
         job.setReducerClass(ReduceClass.class);

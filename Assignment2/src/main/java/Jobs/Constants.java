@@ -41,6 +41,9 @@ public class Constants {
     public static final String OCC_3_GRAMS_OUTPUT = "mini_counter_3_grams";
     public static final String WORD_COUNT_C0_OUTPUT = "word_count_C0";
     public static final String JOIN_OUTPUT = "join";
+    public static final String JOIN_OUTPUT1 = "join1";
+    public static final String JOIN_OUTPUT2 = "join2";
+    public static final String JOIN_OUTPUT3 = "join3";
 
     //// output directories names - s3 TODO
 

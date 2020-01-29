@@ -25,6 +25,9 @@ public class Main {
 
 
             ControlledJob join_N1 = new ControlledJob(joinJobs[0], new LinkedList<>());
+            ControlledJob join_N2 = new ControlledJob(joinJobs[1], new LinkedList<>());
+            ControlledJob join_C1 = new ControlledJob(joinJobs[2], new LinkedList<>());
+            ControlledJob join_C2 = new ControlledJob(joinJobs[3], new LinkedList<>());
 
 
             //dependencies for stage 2
@@ -32,7 +35,9 @@ public class Main {
 
             join_N1.addDependingJob(occ_1grams);
             join_N1.addDependingJob(occ_3grams);
-
+            join_N2.addDependingJob(join_N1);
+            join_C1.addDependingJob(join_N2);
+            join_C2.addDependingJob(join_C1);
 
             JobControl jobControl = new JobControl("JC");
 
@@ -42,6 +47,10 @@ public class Main {
             jobControl.addJob(wordCounter);
 
             jobControl.addJob(join_N1);
+            jobControl.addJob(join_N2);
+            jobControl.addJob(join_C1);
+            jobControl.addJob(join_C2);
+
 
 
             Thread t = new Thread(jobControl, "jc");
@@ -52,7 +61,7 @@ public class Main {
                     throw new RuntimeException("at least 1 job failed: " + jobControl.getFailedJobList().toString());
                 }
                 Constants.printDebug("waiting jobs: " + jobControl.getReadyJobsList().toString());
-                Constants.printDebug("succesful jobs so far: " + jobControl.getSuccessfulJobList().toString());
+                Constants.printDebug("successful jobs so far: " + jobControl.getSuccessfulJobList().toString());
                 Constants.printDebug("Waiting");
                 Thread.sleep(2000);
             }

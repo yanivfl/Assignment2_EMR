@@ -43,7 +43,6 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
 
     @Override
     public boolean nextKeyValue() throws IOException {
-//        Constants.printDebug("nextKeyValue");
         return reader.nextKeyValue();
     }
 
@@ -57,7 +56,6 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
 
     @Override
     public TaggedValue getCurrentValue() throws IOException {
-//        Constants.printDebug("getCurrentValue");
         return parseValue(reader.getCurrentValue().toString());
     }
 
@@ -75,8 +73,6 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
                 .substring(0, str.indexOf('\t'))
                 .split(" ");
 
-        //Constants.printDebug("ngrams full str: "+str + " w1: " + w1+ " w2: " + w2+ " w3: " + w3);
-
         String key = "";
         if (w1)
             key += ngram[0];
@@ -85,7 +81,6 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
         if (w3)
             key += ngram[2];
 
-//        Constants.printDebug("parseKey");
         return new Text(key);
     }
 
@@ -106,7 +101,6 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
         tagged_value.setValue(new Text(value));
         tagged_value.setTag(new Text(this.tag));
 
-//        Constants.printDebug("parseValue");
         return tagged_value;
     }
 

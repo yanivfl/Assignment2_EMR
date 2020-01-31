@@ -32,16 +32,12 @@ public class ProbabilityWithSort {
             double prod2 = (1-K3) * K2 * (N2/C1);
             double prod3 = (1-K3) * (1-K2) * (N1/C0);
 
-            Constants.printDebug(" N1: "+ N1 +",  N2: "+ N2 +",  N3: "+ N3 +",  C0: "+ C0 +",  C1: "+ C1 +",  C2: "+ C2);
-
             return prod1 + prod2 + prod3;
 
         }
 
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] splitted = value.toString().split("\t");
-
-            Constants.printDebug("am alive!! splitted len: " + splitted.length);
 
             double probability = computeProbability(
                     Integer.parseInt(splitted[Constants.N1_IDX]),
@@ -51,8 +47,6 @@ public class ProbabilityWithSort {
                     Integer.parseInt(splitted[Constants.C1_IDX]),
                     Integer.parseInt(splitted[Constants.C2_IDX])
             );
-
-            Constants.printDebug("3gram is: " + splitted[0] +", probability is: " + probability);
 
             ProbabilityKey newKey = new ProbabilityKey(splitted[Constants.W1_W2_W3_IDX], probability);
             DoubleWritable newValue = new DoubleWritable(probability);

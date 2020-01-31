@@ -54,7 +54,7 @@ public class MapSideJoin {
                     String c0[] = strLineRead.split("\t");
                     C0_data.put(c0[0],c0[1]);
                 }
-                Constants.printDebug(C0_data.toString());
+
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

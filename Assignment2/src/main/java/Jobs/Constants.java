@@ -8,17 +8,9 @@ import java.io.IOException;
 
 public class Constants {
 
-
-    // mini-examples corpus ngrams file names
-//    public static final String CORPUS_1_GRAMS = "mini_corpus_1_grams.txt";
-//    public static final String CORPUS_2_GRAMS = "mini_corpus_2_grams.txt";
-//    public static final String CORPUS_3_GRAMS = "mini_corpus_3_grams.txt";
     public static final String CORPUS_1_GRAMS = "mini_corpus_new_1_grams.txt";
     public static final String CORPUS_2_GRAMS = "mini_corpus_new_2_grams.txt";
     public static final String CORPUS_3_GRAMS = "mini_corpus_new_3_grams.txt";
-
-    // corpus ngrams S3 paths
-    // TODO
 
     // job names
     public static final String JOB_1_GRAM = "JOB_1_GRAM";
@@ -31,13 +23,6 @@ public class Constants {
     public static final String JOB_JOIN_C2 = "JOB_JOIN_C2";
     public static final String JOB_JOIN_C0 = "JOB_JOIN_C0";
     public static final String JOB_PROB_WITH_SORT = "JOB_PROB_WITH_SORT";
-
-
-//    public static final String N2 = "N2";
-//    public static final String N3 = "N3";
-//    public static final String C0 = "C0";
-//    public static final String C1 = "C1";
-//    public static final String C2 = "C2";
 
     // output directories names
     public static final String OCC_1_GRAMS_OUTPUT = "mini_counter_1_grams";
@@ -52,7 +37,21 @@ public class Constants {
     public static final String JOIN_OUTPUT5 = "join5";
 
 
-    //// output directories names - s3 TODO
+    public static String getS3NgramLink(int ngram){
+        return "s3://datasets.elasticmapreduce/ngrams/books/20090715/heb-all/"+ngram+"gram/data";
+    }
+
+
+    public static final String MY_KEY = "my_key";
+    public static final String OUTPUT_FILE_NAME = "output";
+    public static final String OUTPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-output";
+    public static final String INPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-input";
+    public static final String MY_JAR_NAME = "myJar"; //TODO
+    public static final String S3 = "s3://";
+
+    public static String getS3Path(String bucketName, String fileName) {
+        return S3 + bucketName + "/" + fileName;
+    }
 
 
     // tags

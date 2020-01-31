@@ -1,100 +1,54 @@
 package Jobs;
 
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.jobcontrol.ControlledJob;
-import org.apache.hadoop.mapreduce.lib.jobcontrol.JobControl;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.ec2.model.InstanceType;
+import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
+import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClient;
+import com.amazonaws.services.elasticmapreduce.model.*;
 
 
-import java.io.IOException;
-import java.util.LinkedList;
+
 
 public class Main {
 
-
     public static void main(String[] args) {
+        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(new ProfileCredentialsProvider().getCredentials());
+        AmazonElasticMapReduce mapReduce = new AmazonElasticMapReduceClient(credentialsProvider.getCredentials());
 
-        Job[] occJobs = NGramsOcc.createOccTables();
-        Job wordCounterJob = WordCounter.createWordCountTable();
-        Job[] joinJobs_N3_N1_N2_C1_C2 = ReduceSideJoin.createJoinTable();
-        Job joinJob_C0 = MapSideJoin.createJoinTable();
-        Job probabilityWithSort = ProbabilityWithSort.createOccTables();
+        HadoopJarStepConfig hadoopJarStep = new HadoopJarStepConfig()
+                .withJar(Constants.getS3Path(Constants.INPUT_BUCKET_NAME, Constants.MY_JAR_NAME)) // This should be a full map reduce application. TODO
+//                    .withMainClass("some.pack.MainClass")
+                .withArgs(Constants.getS3NgramLink(1),
+                        Constants.getS3NgramLink(2),
+                        Constants.getS3NgramLink(3),
+                        Constants.getS3Path(Constants.OUTPUT_BUCKET_NAME, Constants.OUTPUT_FILE_NAME)
+                );
 
-        try {
-            ControlledJob occ_1grams = new ControlledJob(occJobs[0], new LinkedList<>()); // N1
-            ControlledJob occ_2grams = new ControlledJob(occJobs[1], new LinkedList<>()); //N2
-            ControlledJob occ_3grams = new ControlledJob(occJobs[2], new LinkedList<>()); //N3
-            ControlledJob wordCounter = new ControlledJob(wordCounterJob, new LinkedList<>()); //C0
-//
-//
-            ControlledJob join_N1 = new ControlledJob(joinJobs_N3_N1_N2_C1_C2[0], new LinkedList<>());
-            ControlledJob join_N2 = new ControlledJob(joinJobs_N3_N1_N2_C1_C2[1], new LinkedList<>());
-            ControlledJob join_C1 = new ControlledJob(joinJobs_N3_N1_N2_C1_C2[2], new LinkedList<>());
-            ControlledJob join_C2 = new ControlledJob(joinJobs_N3_N1_N2_C1_C2[3], new LinkedList<>());
-            ControlledJob join_C0 = new ControlledJob(joinJob_C0, new LinkedList<>());
-            ControlledJob prob_sort = new ControlledJob(probabilityWithSort, new LinkedList<>());
+        StepConfig stepConfig = new StepConfig()
+                .withName("stepname")
+                .withHadoopJarStep(hadoopJarStep)
+                .withActionOnFailure("TERMINATE_JOB_FLOW");
 
+        JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
+                .withInstanceCount(4)
+                .withMasterInstanceType(InstanceType.M1Large.toString())
+                .withSlaveInstanceType(InstanceType.M1Large.toString())
+                .withHadoopVersion("2.6.0").withEc2KeyName(Constants.MY_KEY)
+                .withKeepJobFlowAliveWhenNoSteps(false)
+                .withPlacement(new PlacementType("us-east-1a"));
 
-            //dependencies for stage 2
-            wordCounter.addDependingJob(occ_1grams);
+        RunJobFlowRequest runFlowRequest = new RunJobFlowRequest()
+                .withName("jobname")
+                .withInstances(instances)
+                .withSteps(stepConfig)
 
-            join_N1.addDependingJob(occ_1grams);
-            join_N1.addDependingJob(occ_3grams);
+                // TODO: getEMR roles
+                .withLogUri(Constants.getS3Path(Constants.OUTPUT_BUCKET_NAME, "logs/"));
 
-            join_N2.addDependingJob(join_N1);
-            join_C1.addDependingJob(join_N2);
-            join_C2.addDependingJob(join_C1);
-            join_C0.addDependingJob(join_C2);
-            prob_sort.addDependingJob(join_C0);
-
-            JobControl jobControl = new JobControl("JC");
-
-            jobControl.addJob(occ_1grams);
-            jobControl.addJob(occ_2grams);
-            jobControl.addJob(occ_3grams);
-            jobControl.addJob(wordCounter);
-
-            jobControl.addJob(join_N1);
-            jobControl.addJob(join_N2);
-            jobControl.addJob(join_C1);
-            jobControl.addJob(join_C2);
-            jobControl.addJob(join_C0);
-            jobControl.addJob(prob_sort);
-
-
-
-            Thread t = new Thread(jobControl, "jc");
-            t.setDaemon(true);
-            t.start();
-            while (!jobControl.allFinished()) {
-                if (!jobControl.getFailedJobList().isEmpty()) {
-                    throw new RuntimeException("at least 1 job failed: " + jobControl.getFailedJobList().toString());
-                }
-                Constants.printDebug("Waiting");
-                Thread.sleep(2000);
-            }
-
-            Constants.printDebug("succesful jobs so far: " + jobControl.getSuccessfulJobList().toString());
-            Constants.printDebug("failed jobs so far: " + jobControl.getFailedJobList().toString());
-            Constants.printDebug("waiting jobs so far: " + jobControl.getWaitingJobList().toString());
-            Constants.printDebug("");
-
-            System.exit(0);
-
-
-
-
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-// catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-
+        RunJobFlowResult runJobFlowResult = mapReduce.runJobFlow(runFlowRequest);
+        String jobFlowId = runJobFlowResult.getJobFlowId();
+        System.out.println("Ran job flow with id: " + jobFlowId);
     }
 }

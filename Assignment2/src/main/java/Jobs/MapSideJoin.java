@@ -105,7 +105,7 @@ public class MapSideJoin {
     }
 
 
-    public static Job[] createJoinTable() {
+    public static Job createJoinTable() {
         Job job_join_C0=null;
 
         try {
@@ -117,8 +117,7 @@ public class MapSideJoin {
             e.printStackTrace();
         }
 
-        Job [] jobs = {job_join_C0};
-        return jobs;
+        return  job_join_C0;
     }
 
 

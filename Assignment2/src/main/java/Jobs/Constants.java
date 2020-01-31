@@ -27,6 +27,7 @@ public class Constants {
     public static final String JOB_JOIN_C1 = "JOB_JOIN_C1";
     public static final String JOB_JOIN_C2 = "JOB_JOIN_C2";
     public static final String JOB_JOIN_C0 = "JOB_JOIN_C0";
+    public static final String JOB_PROB_WITH_SORT = "JOB_PROB_WITH_SORT";
 
 
 //    public static final String N2 = "N2";
@@ -45,6 +46,8 @@ public class Constants {
     public static final String JOIN_OUTPUT2 = "join2";
     public static final String JOIN_OUTPUT3 = "join3";
     public static final String JOIN_OUTPUT4 = "join4";
+    public static final String JOIN_OUTPUT5 = "join5";
+
 
     //// output directories names - s3 TODO
 
@@ -53,6 +56,15 @@ public class Constants {
     public static final Text TAG_1_OCC = new Text("1");
     public static final Text TAG_2_OCC = new Text("2");
     public static final Text TAG_3_OCC = new Text("3");
+
+
+    public static final int W1_W2_W3_IDX = 0;
+    public static final int N3_IDX = 1;
+    public static final int N1_IDX = 2;
+    public static final int N2_IDX = 3;
+    public static final int C1_IDX = 4;
+    public static final int C2_IDX = 5;
+    public static final int C0_IDX = 6;
 
 
     /* If there is an output folder, delete it */

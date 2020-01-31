@@ -22,7 +22,7 @@ public class ReduceSideJoin {
 
             TaggedKey newKey = new TaggedKey(key, value.getTag());
             context.write(newKey, value);
-            Constants.printDebug("newKey: "+newKey.toString());
+            //Constants.printDebug("newKey: "+newKey.toString());
             //Constants.printDebug("map - tagged key: "+ key + ", tag: " + value.getTag() + ", initial key: "+value.getInitialKey());
         }
     }

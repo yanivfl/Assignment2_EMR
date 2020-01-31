@@ -31,6 +31,9 @@ public class ProbabilityWithSort {
             double prod1 = K3 * (N3/C2);
             double prod2 = (1-K3) * K2 * (N2/C1);
             double prod3 = (1-K3) * (1-K2) * (N1/C0);
+
+            Constants.printDebug(" N1: "+ N1 +",  N2: "+ N2 +",  N3: "+ N3 +",  C0: "+ C0 +",  C1: "+ C1 +",  C2: "+ C2);
+
             return prod1 + prod2 + prod3;
 
         }
@@ -38,7 +41,7 @@ public class ProbabilityWithSort {
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] splitted = value.toString().split("\t");
 
-            Constants.printDebug("am alive!! SPLITED len: " + splitted.length);
+            Constants.printDebug("am alive!! splitted len: " + splitted.length);
 
             double probability = computeProbability(
                     Integer.parseInt(splitted[Constants.N1_IDX]),
@@ -51,7 +54,9 @@ public class ProbabilityWithSort {
 
             Constants.printDebug("3gram is: " + splitted[0] +", probability is: " + probability);
 
-            context.write(new ProbabilityKey(splitted[Constants.W1_W2_W3_IDX], probability), new DoubleWritable(probability));
+            ProbabilityKey newKey = new ProbabilityKey(splitted[Constants.W1_W2_W3_IDX], probability);
+            DoubleWritable newValue = new DoubleWritable(probability);
+            context.write(newKey, newValue);
         }
     }
 
@@ -101,16 +106,15 @@ public class ProbabilityWithSort {
 
 
     public static Job createOccTables() {
-        Job probabiltyWithSort = null;
+        Job probabilityWithSort = null;
 
         try {
-            probabiltyWithSort = CreateCounterJob(Constants.JOB_PROB_WITH_SORT, Constants.JOIN_OUTPUT5, Constants.JOIN_OUTPUT4);
+            probabilityWithSort = CreateCounterJob(Constants.JOB_PROB_WITH_SORT, Constants.JOIN_OUTPUT5, Constants.JOIN_OUTPUT4);
 
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        Constants.printDebug("here?");
-        return probabiltyWithSort;
+        return probabilityWithSort;
     }
 }

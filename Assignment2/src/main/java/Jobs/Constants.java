@@ -10,9 +10,12 @@ public class Constants {
 
 
     // mini-examples corpus ngrams file names
-    public static final String CORPUS_1_GRAMS = "mini_corpus_1_grams.txt";
-    public static final String CORPUS_2_GRAMS = "mini_corpus_2_grams.txt";
-    public static final String CORPUS_3_GRAMS = "mini_corpus_3_grams.txt";
+//    public static final String CORPUS_1_GRAMS = "mini_corpus_1_grams.txt";
+//    public static final String CORPUS_2_GRAMS = "mini_corpus_2_grams.txt";
+//    public static final String CORPUS_3_GRAMS = "mini_corpus_3_grams.txt";
+    public static final String CORPUS_1_GRAMS = "mini_corpus_new_1_grams.txt";
+    public static final String CORPUS_2_GRAMS = "mini_corpus_new_2_grams.txt";
+    public static final String CORPUS_3_GRAMS = "mini_corpus_new_3_grams.txt";
 
     // corpus ngrams S3 paths
     // TODO

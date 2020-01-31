@@ -1,5 +1,6 @@
 package InputFormats;
 
+import Jobs.Constants;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
@@ -13,8 +14,6 @@ import java.util.Objects;
 
 public class ProbabilityKey implements Writable, WritableComparable<ProbabilityKey> {
 
-    // An implementation of key with tag, as a writable object
-
     private DoubleWritable probability;
     private Text w1_w2;
     private Text w1_w2_w3;
@@ -24,6 +23,12 @@ public class ProbabilityKey implements Writable, WritableComparable<ProbabilityK
         this.w1_w2 = new Text(word[0] + " " + word[1]);
         this.w1_w2_w3 = new Text(w1_w2_w3);
         this.probability = new DoubleWritable(probability);
+    }
+
+    public ProbabilityKey() {
+        this.w1_w2 = new Text();
+        this.w1_w2_w3 = new Text();
+        this.probability = new DoubleWritable(0);
     }
 
     @Override
@@ -61,11 +66,12 @@ public class ProbabilityKey implements Writable, WritableComparable<ProbabilityK
 
     @Override
     public int compareTo(ProbabilityKey o) {
+
         // compare by w1_w2, if they are equal, compare by the probability of (w3 | w1_w2)
         int comp = this.w1_w2.toString().compareTo(o.getW1_w2().toString());
 
         if (comp == 0)
-            return this.probability.toString().compareTo(o.getProbability().toString());
+            return (-1) * this.probability.toString().compareTo(o.getProbability().toString());
 
         return comp;
 
@@ -81,5 +87,17 @@ public class ProbabilityKey implements Writable, WritableComparable<ProbabilityK
 
     public Text getW1_w2_w3() {
         return w1_w2_w3;
+    }
+
+    public void setProbability(DoubleWritable probability) {
+        this.probability = probability;
+    }
+
+    public void setW1_w2(Text w1_w2) {
+        this.w1_w2 = w1_w2;
+    }
+
+    public void setW1_w2_w3(Text w1_w2_w3) {
+        this.w1_w2_w3 = w1_w2_w3;
     }
 }

@@ -18,17 +18,13 @@ public class MapReduceMain {
             String threeGramLink = args[2];
             String outputLink = args[3];
 
-
             Constants.printDebug("1gram: " + oneGramLink);
             Constants.printDebug("2gram: " + twoGramLink);
             Constants.printDebug("3gram: " + threeGramLink);
             Constants.printDebug("output: " + outputLink);
 
-
-
-
             // WORKS FROM HERE
-            JobControl jobControl = createJobs();
+            JobControl jobControl = createJobs(oneGramLink, twoGramLink, threeGramLink);
             Thread t = new Thread(jobControl, "jc");
             t.setDaemon(true);
             t.start();
@@ -59,8 +55,8 @@ public class MapReduceMain {
     }
 
 
-    private static JobControl createJobs() throws IOException {
-        Job[] occJobs = NGramsOcc.createOccJobs();
+    private static JobControl createJobs(String oneGram, String twoGram, String threeGram) throws IOException {
+        Job[] occJobs = NGramsOcc.createOccJobs(oneGram, twoGram, threeGram);
         Job wordCounterJob = WordCounter.createWordCountJob();
         Job[] joinJobs_N3_N1_N2_C1_C2 = ReduceSideJoin.createJoinJobs();
         Job joinJob_C0 = MapSideJoin.createJoinJob();

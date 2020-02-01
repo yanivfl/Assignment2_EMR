@@ -68,27 +68,27 @@ public class NGramsOcc {
     }
 
 
-    public static Job[] createOccJobs() {
+    public static Job[] createOccJobs(String oneGram, String twoGram, String threeGram) {
         Job job_1gram=null, job_2gram=null, job_3gram=null;
 
         try {
             job_1gram = CreateCounterJob(
                     Constants.JOB_1_GRAM,
                     Constants.getS3OutputPath(Constants.OCC_1_GRAMS_OUTPUT),
-                    Constants.getS3INPUTPath(Constants.CORPUS_1_GRAMS));
-//                    Constants.getS3NgramLink(1)); //TODO CHANGE
+                    //Constants.getS3INPUTPath(Constants.CORPUS_1_GRAMS));
+                    oneGram);
 
             job_2gram = CreateCounterJob(
                     Constants.JOB_2_GRAM,
                     Constants.getS3OutputPath(Constants.OCC_2_GRAMS_OUTPUT),
-                    Constants.getS3INPUTPath(Constants.CORPUS_2_GRAMS));
-//                    Constants.getS3NgramLink(2)); //TODO CHANGE
+//                    Constants.getS3INPUTPath(Constants.CORPUS_2_GRAMS));
+                    twoGram);
 
             job_3gram = CreateCounterJob(
                     Constants.JOB_3_GRAM,
                     Constants.getS3OutputPath(Constants.OCC_3_GRAMS_OUTPUT),
-                    Constants.getS3INPUTPath(Constants.CORPUS_3_GRAMS));
-//                    Constants.getS3NgramLink(3)); //TODO CHANGE
+//                    Constants.getS3INPUTPath(Constants.CORPUS_3_GRAMS));
+                    threeGram);
         }
         catch (IOException e) {
             e.printStackTrace();

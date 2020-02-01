@@ -19,9 +19,6 @@ public class Main {
                 .withRegion("us-east-1")
                 .build();
 
-//        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(new ProfileCredentialsProvider().getCredentials());
-//        AmazonElasticMapReduce mapReduce = new AmazonElasticMapReduceClient(credentialsProvider.getCredentials());
-
         Constants.printDebug("hadoop jar step");
         HadoopJarStepConfig hadoopJarStep = new HadoopJarStepConfig()
                 .withJar(Constants.getS3Path(Constants.INPUT_BUCKET_NAME, Constants.MY_JAR_NAME)) // This should be a full map reduce application. TODO
@@ -42,9 +39,9 @@ public class Main {
         Constants.printDebug("jobFlowConfig jar step");
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
-                .withInstanceCount(4)
-                .withMasterInstanceType(InstanceType.M1Medium.toString()) //TODO Large
-                .withSlaveInstanceType(InstanceType.M1Medium.toString()) //TODO Large
+                .withInstanceCount(2) //TODO 4
+                .withMasterInstanceType(InstanceType.M1Small.toString()) //TODO Large
+                .withSlaveInstanceType(InstanceType.M1Small.toString()) //TODO Large
                 .withHadoopVersion("2.6.0").withEc2KeyName(Constants.MY_KEY)
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));

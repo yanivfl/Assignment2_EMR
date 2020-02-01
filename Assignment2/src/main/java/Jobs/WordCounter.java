@@ -56,10 +56,15 @@ public class WordCounter {
     }
 
 
-    public static Job createWordCountTable() {
+    public static Job createWordCountJob() {
 
         try {
-            return CreateWordCountJob(Constants.JOB_C0, Constants.WORD_COUNT_C0_OUTPUT, Constants.OCC_1_GRAMS_OUTPUT);
+            Constants.printDebug("Creating C0 Job");
+            return CreateWordCountJob(
+                    Constants.JOB_C0,
+                    Constants.getS3OutputPath(Constants.WORD_COUNT_C0_OUTPUT),
+                    Constants.getS3OutputPath(Constants.OCC_1_GRAMS_OUTPUT)
+            );
         }
         catch (IOException e) {
             e.printStackTrace();

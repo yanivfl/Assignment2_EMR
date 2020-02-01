@@ -107,29 +107,51 @@ public class ReduceSideJoin {
     }
 
 
-    public static Job[] createJoinTable() {
+    public static Job[] createJoinJobs() {
         Job job_join_N1 = null, job_join_N2 = null, job_join_C1 = null, job_join_C2 = null;
 
         try {
             // The reducer join output file will be from the following format ((w1,w2,w3) N3 N1 N2 C1 C2)
 
-            job_join_N1 = CreateJoinJob(Constants.JOB_JOIN_N1, Constants.JOIN_OUTPUT, Constants.OCC_3_GRAMS_OUTPUT,
-                    new InputFormat_w3(), Constants.OCC_1_GRAMS_OUTPUT, new InputFormat_w1());
+            job_join_N1 = CreateJoinJob(
+                    Constants.JOB_JOIN_N1,
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT),
+                    Constants.getS3OutputPath(Constants.OCC_3_GRAMS_OUTPUT),
+                    new InputFormat_w3(),
+                    Constants.getS3OutputPath(Constants.OCC_1_GRAMS_OUTPUT),
+                    new InputFormat_w1());
 
-            job_join_N2 = CreateJoinJob(Constants.JOB_JOIN_N2, Constants.JOIN_OUTPUT1, Constants.JOIN_OUTPUT,
-                    new InputFormat_w2_w3(), Constants.OCC_2_GRAMS_OUTPUT, new InputFormat_w1_w2_occ2());
+            job_join_N2 = CreateJoinJob(
+                    Constants.JOB_JOIN_N2,
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT1),
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT),
+                    new InputFormat_w2_w3(),
+                    Constants.getS3OutputPath(Constants.OCC_2_GRAMS_OUTPUT),
+                    new InputFormat_w1_w2_occ2());
 
-            job_join_C1 = CreateJoinJob(Constants.JOB_JOIN_C1, Constants.JOIN_OUTPUT2, Constants.JOIN_OUTPUT1,
-                    new InputFormat_w2(), Constants.OCC_1_GRAMS_OUTPUT, new InputFormat_w1());
+            job_join_C1 = CreateJoinJob(
+                    Constants.JOB_JOIN_C1,
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT2),
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT1),
+                    new InputFormat_w2(),
+                    Constants.getS3OutputPath(Constants.OCC_1_GRAMS_OUTPUT),
+                    new InputFormat_w1());
 
-            job_join_C2 = CreateJoinJob(Constants.JOB_JOIN_C2, Constants.JOIN_OUTPUT3, Constants.JOIN_OUTPUT2,
-                    new InputFormat_w1_w2_occ3(), Constants.OCC_2_GRAMS_OUTPUT, new InputFormat_w1_w2_occ2());
+            job_join_C2 = CreateJoinJob(
+                    Constants.JOB_JOIN_C2,
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT3),
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT2),
+                    new InputFormat_w1_w2_occ3(),
+                    Constants.getS3OutputPath(Constants.OCC_2_GRAMS_OUTPUT),
+                    new InputFormat_w1_w2_occ2());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Job[] jobs = {job_join_N1, job_join_N2, job_join_C1, job_join_C2};
+
+        Constants.printDebug("Finished creating reduce side join jobs");
         return jobs;
     }
 

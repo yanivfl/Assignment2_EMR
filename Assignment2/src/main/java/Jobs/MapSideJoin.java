@@ -32,10 +32,6 @@ public class MapSideJoin {
         private HashMap<String, String> C0_data = new HashMap<String, String>();
         private BufferedReader brReader;
 
-        enum MYCOUNTER {
-            RECORD_COUNT, FILE_EXISTS, FILE_NOT_FOUND, SOME_OTHER_ERROR
-        }
-
         @Override
         protected void setup(Context context) throws IOException,
                 InterruptedException {
@@ -105,18 +101,22 @@ public class MapSideJoin {
     }
 
 
-    public static Job createJoinTable() {
+    public static Job createJoinJob() {
         Job job_join_C0=null;
 
         try {
             // The reducer join output file will be from the following format ((w1,w2,w3) N3 N1 N2 C1 C2)
 
-            job_join_C0 = CreateJoinJob(Constants.JOB_JOIN_C0, Constants.JOIN_OUTPUT4, Constants.JOIN_OUTPUT3);
+            job_join_C0 = CreateJoinJob(
+                    Constants.JOB_JOIN_C0,
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT4),
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT3));
         }
         catch (IOException e) {
             e.printStackTrace();
         }
 
+        Constants.printDebug("finished creating map side join job");
         return  job_join_C0;
     }
 

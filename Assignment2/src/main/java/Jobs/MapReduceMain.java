@@ -13,6 +13,20 @@ public class MapReduceMain {
     public static void main(String[] args) {
 
         try {
+            String oneGramLink = args[0];
+            String twoGramLink = args[1];
+            String threeGramLink = args[2];
+            String outputLink = args[3];
+
+
+            Constants.printDebug("1gram: " + oneGramLink);
+            Constants.printDebug("2gram: " + twoGramLink);
+            Constants.printDebug("3gram: " + threeGramLink);
+            Constants.printDebug("output: " + outputLink);
+
+
+
+
             // WORKS FROM HERE
             JobControl jobControl = createJobs();
             Thread t = new Thread(jobControl, "jc");
@@ -46,11 +60,11 @@ public class MapReduceMain {
 
 
     private static JobControl createJobs() throws IOException {
-        Job[] occJobs = NGramsOcc.createOccTables();
-        Job wordCounterJob = WordCounter.createWordCountTable();
-        Job[] joinJobs_N3_N1_N2_C1_C2 = ReduceSideJoin.createJoinTable();
-        Job joinJob_C0 = MapSideJoin.createJoinTable();
-        Job probabilityWithSort = ProbabilityWithSort.createOccTables();
+        Job[] occJobs = NGramsOcc.createOccJobs();
+        Job wordCounterJob = WordCounter.createWordCountJob();
+        Job[] joinJobs_N3_N1_N2_C1_C2 = ReduceSideJoin.createJoinJobs();
+        Job joinJob_C0 = MapSideJoin.createJoinJob();
+        Job probabilityWithSort = ProbabilityWithSort.createProbabilityWithSortJob();
 
         ControlledJob occ_1grams = new ControlledJob(occJobs[0], new LinkedList<>()); // N1
         ControlledJob occ_2grams = new ControlledJob(occJobs[1], new LinkedList<>()); //N2

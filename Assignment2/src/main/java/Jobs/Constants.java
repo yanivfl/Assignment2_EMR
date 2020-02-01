@@ -46,11 +46,15 @@ public class Constants {
     public static final String OUTPUT_FILE_NAME = "output";
     public static final String OUTPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-output";
     public static final String INPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-input";
-    public static final String MY_JAR_NAME = "Assignment1.jar"; //TODO
+    public static final String MY_JAR_NAME = "Assignment1.jar";
     public static final String S3 = "s3://";
 
     public static String getS3Path(String bucketName, String fileName) {
         return S3 + bucketName + "/" + fileName;
+    }
+
+    public static String getS3OutputPath(String fileName) {
+        return S3 + OUTPUT_BUCKET_NAME + "/" + fileName;
     }
 
 
@@ -71,15 +75,15 @@ public class Constants {
 
     /* If there is an output folder, delete it */
     public static void clearOutput(String path) {
-        File file = new File(path);
-
-        if (file.exists())  {
-            try {
-                FileUtils.deleteDirectory(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        File file = new File(path);
+//
+//        if (file.exists())  {
+//            try {
+//                FileUtils.deleteDirectory(file);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 

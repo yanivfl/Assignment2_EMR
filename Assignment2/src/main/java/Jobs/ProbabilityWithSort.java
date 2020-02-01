@@ -99,16 +99,20 @@ public class ProbabilityWithSort {
     }
 
 
-    public static Job createOccTables() {
+    public static Job createProbabilityWithSortJob() {
         Job probabilityWithSort = null;
 
         try {
-            probabilityWithSort = CreateCounterJob(Constants.JOB_PROB_WITH_SORT, Constants.JOIN_OUTPUT5, Constants.JOIN_OUTPUT4);
+            probabilityWithSort = CreateCounterJob(
+                    Constants.JOB_PROB_WITH_SORT,
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT5),
+                    Constants.getS3OutputPath(Constants.JOIN_OUTPUT4));
 
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        Constants.printDebug("finished creating probability with sort job");
         return probabilityWithSort;
     }
 }

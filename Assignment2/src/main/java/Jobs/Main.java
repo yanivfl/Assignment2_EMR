@@ -17,6 +17,7 @@ public class Main {
         AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(new ProfileCredentialsProvider().getCredentials());
         AmazonElasticMapReduce mapReduce = new AmazonElasticMapReduceClient(credentialsProvider.getCredentials());
 
+        Constants.printDebug("hadoop jar step");
         HadoopJarStepConfig hadoopJarStep = new HadoopJarStepConfig()
                 .withJar(Constants.getS3Path(Constants.INPUT_BUCKET_NAME, Constants.MY_JAR_NAME)) // This should be a full map reduce application. TODO
 //                    .withMainClass("some.pack.MainClass")
@@ -26,10 +27,14 @@ public class Main {
                         Constants.getS3Path(Constants.OUTPUT_BUCKET_NAME, Constants.OUTPUT_FILE_NAME)
                 );
 
+        Constants.printDebug("stepConfig jar step");
+
         StepConfig stepConfig = new StepConfig()
                 .withName("stepname")
                 .withHadoopJarStep(hadoopJarStep)
                 .withActionOnFailure("TERMINATE_JOB_FLOW");
+
+        Constants.printDebug("jobFlowConfig jar step");
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
                 .withInstanceCount(4)
@@ -39,12 +44,14 @@ public class Main {
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));
 
+        Constants.printDebug("RunJobFlow jar step");
+
         RunJobFlowRequest runFlowRequest = new RunJobFlowRequest()
                 .withName("jobname")
                 .withInstances(instances)
                 .withSteps(stepConfig)
-
-                // TODO: getEMR roles
+                .withJobFlowRole("EMR_EC2_DefaultRole")
+                .withServiceRole("EMR_DefaultRole")
                 .withLogUri(Constants.getS3Path(Constants.OUTPUT_BUCKET_NAME, "logs/"));
 
         RunJobFlowResult runJobFlowResult = mapReduce.runJobFlow(runFlowRequest);

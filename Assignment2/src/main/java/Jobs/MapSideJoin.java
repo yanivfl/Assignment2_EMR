@@ -35,7 +35,7 @@ public class MapSideJoin {
         @Override
         protected void setup(Context context) throws IOException,
                 InterruptedException {
-            setupOrderHashMap(new Path(Constants.WORD_COUNT_C0_OUTPUT + "/part-r-00000"), context);
+            setupOrderHashMap(new Path(Constants.WORD_COUNT_C0_OUTPUT), context); //TODO
         }
 
         private void setupOrderHashMap(Path filePath, Context context)

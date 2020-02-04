@@ -42,10 +42,10 @@ public class Constants {
     }
 
 
-    public static final String MY_KEY = "YuvalKeyPair";
+    public static final String MY_KEY = "my_key";
     public static final String OUTPUT_FILE_NAME = "output";
-    public static final String OUTPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-output-1";
-    public static final String INPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-input-1";
+    public static final String OUTPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-output";
+    public static final String INPUT_BUCKET_NAME = "dsps-201-assignment2-yaniv-yuval-input";
     public static final String MY_JAR_NAME = "Assignment1.jar";
     public static final String S3 = "s3n://";
 

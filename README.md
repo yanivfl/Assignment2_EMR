@@ -27,89 +27,90 @@ _note_: If you followed the instructions, the file should appear in your output 
 ## Statistics 
 path: logs/<change>/hadoop-mapreduce/history/2020/02/<change>/000000
 JOB_1_GRAM:
-    Map input records=
-		Map output records=
-		Combine input records=
-		Combine output records=
-		Reduce input records=
-		Reduce output records=
+<br/>    	Map input records=
+<br/>		Map output records=
+<br/>		Combine input records=
+<br/>		Combine output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
 -------------------------------------------
 
 JOB_2_GRAM:
-    Map input records=
-		Map output records=
-		Combine input records=
-		Combine output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Combine input records=
+<br/>		Combine output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
 -------------------------------------------
 
 JOB_3_GRAM:
-    Map input records=
-		Map output records=
-		Combine input records=
-		Combine output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Combine input records=
+<br/>		Combine output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
 -------------------------------------------
 
  JOB_C0
-    Map input records=
-		Map output records=
-		Combine input records=
-		Combine output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Combine input records=
+<br/>		Combine output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
 -------------------------------------------
 
 JOB_JOIN_N1
-		Map input records=
-		Map output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
 -------------------------------------------
 
 JOB_JOIN_N2
-		Map input records=
-		Map output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
 -------------------------------------------
 
 JOB_JOIN_C1
-		Map input records=
-		Map output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
+
 -------------------------------------------
 
 JOB_JOIN_C2
-		Map input records=
-		Map output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
     
     -------------------------------------------
 
 JOB_JOIN_C0
-		Map input records=
-		Map output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
     
     -------------------------------------------
 
 JOB_PROB_WITH_SORT
-		Map input records=
-		Map output records=
-		Reduce input records=
-		Reduce output records=
+<br/>		Map input records=
+<br/>		Map output records=
+<br/>		Reduce input records=
+<br/>		Reduce output records=
 
     -------------------------------------------
     

@@ -77,11 +77,11 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
             Constants.printDebug("wrong InputFileFormat, missing booleans for w1 or w2 or w3");
         }
         String key = "";
-        if (w1)
+        if (w1 && ngram.length > 0)
             key += ngram[0];
-        if (w2)
+        if (w2 && ngram.length > 1)
             key += ngram[1];
-        if (w3)
+        if (w3 && ngram.length > 2)
             key += ngram[2];
 
         return new Text(key);

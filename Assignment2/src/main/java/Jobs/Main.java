@@ -20,7 +20,7 @@ public class Main {
 
         Constants.printDebug("hadoop jar step");
         HadoopJarStepConfig hadoopJarStep = new HadoopJarStepConfig()
-                .withJar(Constants.getS3Path(Constants.INPUT_BUCKET_NAME, Constants.MY_JAR_NAME)) // This should be a full map reduce application. TODO
+                .withJar(Constants.getS3Path(Constants.INPUT_BUCKET_NAME, Constants.MY_JAR_NAME))
 //                    .withMainClass("some.pack.MainClass")
                 .withArgs(
                         Constants.getS3NgramLink(1),
@@ -39,7 +39,7 @@ public class Main {
         Constants.printDebug("jobFlowConfig jar step");
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
-                .withInstanceCount(4)
+                .withInstanceCount(6)
                 .withMasterInstanceType(InstanceType.M1Large.toString())
                 .withSlaveInstanceType(InstanceType.M1Large.toString())
                 .withHadoopVersion("2.6.0").withEc2KeyName(Constants.MY_KEY)
@@ -61,7 +61,5 @@ public class Main {
         String jobFlowId = runJobFlowResult.getJobFlowId();
         System.out.println("Ran job flow with id: " + jobFlowId);
 
-
-        //TODO: create s3 delete function that deletes all tables except for final output
     }
 }

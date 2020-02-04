@@ -73,6 +73,9 @@ public class OccTaggedValueRecordReader extends RecordReader<Text,TaggedValue> {
                 .substring(0, str.indexOf('\t'))
                 .split(" ");
 
+        if ((w1 && ngram.length < 1) || (w2 && ngram.length < 2) || (w3 && ngram.length < 3)) {
+            Constants.printDebug("wrong InputFileFormat, missing booleans for w1 or w2 or w3");
+        }
         String key = "";
         if (w1)
             key += ngram[0];

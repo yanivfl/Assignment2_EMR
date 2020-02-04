@@ -20,8 +20,9 @@ public class ProbabilityKey implements Writable, WritableComparable<ProbabilityK
 
     public ProbabilityKey(String w1_w2_w3, double probability) {
         String[] word = w1_w2_w3.split(" ");
-        if (word.length < 2)
-            Constants.printDebug("");   // TODO
+        if (word.length < 2){
+            Constants.printDebug("w1_w2_w3 doesn't contain 3 words in ProbabilityKey!, key is: " + w1_w2_w3);
+        }
 
         this.w1_w2 = new Text(word[0] + " " + word[1]);
         this.w1_w2_w3 = new Text(w1_w2_w3);

@@ -19,7 +19,6 @@ public class ReduceSideJoin {
 
         @Override
         public void map(Text key, TaggedValue value, Context context) throws IOException, InterruptedException {
-
             TaggedKey newKey = new TaggedKey(key, value.getTag());
             context.write(newKey, value);
         }
@@ -63,9 +62,7 @@ public class ReduceSideJoin {
                 context.write(
                         new Text(table2Value.getInitialKey()),
                         new Text(table2Value.getValue().toString() + "\t" + OccValue.toString()));
-
             }
-
         }
     }
 
@@ -90,7 +87,6 @@ public class ReduceSideJoin {
 //        job.setMapperClass(MapClass.class);
         job.setPartitionerClass(PartitionerClass.class);
         job.setReducerClass(ReduceClass.class);
-
 
         job.setMapOutputKeyClass(TaggedKey.class);
         job.setMapOutputValueClass(TaggedValue.class);

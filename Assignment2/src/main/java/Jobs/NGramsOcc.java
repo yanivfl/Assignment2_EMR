@@ -23,8 +23,12 @@ public class NGramsOcc {
 
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] splitted = value.toString().split("\t");
+            if(splitted.length < 3){
+                Constants.printDebug("Line is different than expected!");
+                Constants.printDebug("Text value is: " + value.toString());
+                return;
+            }
             String ngram = splitted[0];
-//            String year = splitted[1];
             String occurrences = splitted[2];
             context.write(new Text(ngram), new IntWritable(Integer.parseInt(occurrences)));
         }

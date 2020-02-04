@@ -48,6 +48,10 @@ public class MapSideJoin {
 
                 while ((strLineRead = brReader.readLine()) != null) {
                     String c0[] = strLineRead.split("\t");
+                    if (c0.length < 2) {
+                        Constants.printDebug("MapSideJoin - setupOrderHashMap input is wrong c0 is:" + strLineRead);
+                    }
+
                     C0_data.put(c0[0],c0[1]);
                 }
 
@@ -69,16 +73,16 @@ public class MapSideJoin {
                 throws IOException, InterruptedException {
 
             String[] splitted = value.toString().split("\t");
+            if (splitted.length < 1) {
+                Constants.printDebug("MapSideJoin - input is not as expected, value is: " + value);
+                return;
+            }
+
             String ngram = splitted[0];
             String values = value.toString().substring(value.toString().indexOf('\t')+1);
             context.write(new Text(ngram), new Text(values + '\t' + C0_data.get("C0")));
-
-
         }
-
-
     }
-
 
 
     /* Create a job instance for N1, N2, N3, C1, C2 */

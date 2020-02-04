@@ -38,6 +38,9 @@ public class ProbabilityWithSort {
 
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] splitted = value.toString().split("\t");
+            if (splitted.length < 7) {
+                Constants.printDebug("ProbabilityWithSort got wrong input, value is: "+ value);
+            }
 
             double probability = computeProbability(
                     Integer.parseInt(splitted[Constants.N1_IDX]),
@@ -61,7 +64,6 @@ public class ProbabilityWithSort {
                 context.write(new Text(key.getW1_w2_w3()), new DoubleWritable(value.get()));
             }
         }
-
     }
 
     public static class PartitionerClass extends Partitioner<ProbabilityKey,DoubleWritable> {
@@ -70,7 +72,6 @@ public class ProbabilityWithSort {
         public int getPartition(ProbabilityKey key, DoubleWritable value, int numPartitions) {
             return key.getW1_w2_w3().hashCode() % numPartitions;
         }
-
     }
 
 

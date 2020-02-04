@@ -14,6 +14,10 @@ public class MapReduceMain {
     public static void main(String[] args) {
 
         try {
+            if (args.length < 4) {
+                Constants.printDebug("args is not from the expected length!");
+            }
+
             String oneGramLink = args[0];
             String twoGramLink = args[1];
             String threeGramLink = args[2];

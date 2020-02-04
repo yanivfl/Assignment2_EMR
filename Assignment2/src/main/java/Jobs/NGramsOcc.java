@@ -10,7 +10,10 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
 
 import java.io.IOException;
 
@@ -61,9 +64,10 @@ public class NGramsOcc {
         job.setReducerClass(ReduceClass.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
+        job.setInputFormatClass(SequenceFileInputFormat.class);
+        job.setOutputFormatClass(TextOutputFormat.class);
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputDirName));
-
         return job;
     }
 
@@ -75,19 +79,16 @@ public class NGramsOcc {
             job_1gram = CreateCounterJob(
                     Constants.JOB_1_GRAM,
                     Constants.getS3OutputPath(Constants.OCC_1_GRAMS_OUTPUT),
-                    //Constants.getS3INPUTPath(Constants.CORPUS_1_GRAMS));
                     oneGram);
 
             job_2gram = CreateCounterJob(
                     Constants.JOB_2_GRAM,
                     Constants.getS3OutputPath(Constants.OCC_2_GRAMS_OUTPUT),
-//                    Constants.getS3INPUTPath(Constants.CORPUS_2_GRAMS));
                     twoGram);
 
             job_3gram = CreateCounterJob(
                     Constants.JOB_3_GRAM,
                     Constants.getS3OutputPath(Constants.OCC_3_GRAMS_OUTPUT),
-//                    Constants.getS3INPUTPath(Constants.CORPUS_3_GRAMS));
                     threeGram);
         }
         catch (IOException e) {

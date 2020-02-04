@@ -8,8 +8,7 @@ import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClient;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClientBuilder;
 import com.amazonaws.services.elasticmapreduce.model.*;
-
-
+import com.google.inject.internal.cglib.core.$Constants;
 
 
 public class Main {
@@ -23,7 +22,8 @@ public class Main {
         HadoopJarStepConfig hadoopJarStep = new HadoopJarStepConfig()
                 .withJar(Constants.getS3Path(Constants.INPUT_BUCKET_NAME, Constants.MY_JAR_NAME)) // This should be a full map reduce application. TODO
 //                    .withMainClass("some.pack.MainClass")
-                .withArgs(Constants.getS3NgramLink(1),
+                .withArgs(
+                        Constants.getS3NgramLink(1),
                         Constants.getS3NgramLink(2),
                         Constants.getS3NgramLink(3),
                         Constants.getS3OutputPath(Constants.OUTPUT_FILE_NAME)
@@ -39,9 +39,9 @@ public class Main {
         Constants.printDebug("jobFlowConfig jar step");
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
-                .withInstanceCount(2) //TODO 4
-                .withMasterInstanceType(InstanceType.M1Small.toString()) //TODO Large
-                .withSlaveInstanceType(InstanceType.M1Small.toString()) //TODO Large
+                .withInstanceCount(4) //TODO 4
+                .withMasterInstanceType(InstanceType.M1Large.toString()) //TODO Large
+                .withSlaveInstanceType(InstanceType.M1Large.toString()) //TODO Large
                 .withHadoopVersion("2.6.0").withEc2KeyName(Constants.MY_KEY)
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));

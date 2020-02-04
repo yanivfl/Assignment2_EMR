@@ -23,7 +23,6 @@ public class MapReduceMain {
             Constants.printDebug("3gram: " + threeGramLink);
             Constants.printDebug("output: " + outputLink);
 
-            // WORKS FROM HERE
             JobControl jobControl = createJobs(oneGramLink, twoGramLink, threeGramLink);
             Thread t = new Thread(jobControl, "jc");
             t.setDaemon(true);
@@ -36,7 +35,7 @@ public class MapReduceMain {
                 Thread.sleep(2000);
             }
 
-            Constants.printDebug("succesful jobs so far: " + jobControl.getSuccessfulJobList().toString());
+            Constants.printDebug("successful jobs so far: " + jobControl.getSuccessfulJobList().toString());
             Constants.printDebug("failed jobs so far: " + jobControl.getFailedJobList().toString());
             Constants.printDebug("waiting jobs so far: " + jobControl.getWaitingJobList().toString());
             Constants.printDebug("");
@@ -73,7 +72,6 @@ public class MapReduceMain {
         ControlledJob join_C2 = new ControlledJob(joinJobs_N3_N1_N2_C1_C2[3], new LinkedList<>());
         ControlledJob join_C0 = new ControlledJob(joinJob_C0, new LinkedList<>());
         ControlledJob prob_sort = new ControlledJob(probabilityWithSort, new LinkedList<>());
-
 
         //dependencies for stage 2
         wordCounter.addDependingJob(occ_1grams);

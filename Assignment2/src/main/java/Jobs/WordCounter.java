@@ -44,7 +44,6 @@ public class WordCounter {
         Job job = Job.getInstance(conf, jobName);
         job.setJarByClass(WordCounter.class);
         job.setMapperClass(MapClass.class);
-//        job.setPartitionerClass(PartitionerClass.class);
         job.setCombinerClass(ReduceClass.class);
         job.setReducerClass(ReduceClass.class);
         job.setOutputKeyClass(Text.class);

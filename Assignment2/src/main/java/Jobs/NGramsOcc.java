@@ -48,7 +48,7 @@ public class NGramsOcc {
 
         @Override
         public int getPartition(Text key, IntWritable value, int numPartitions) {
-            return key.hashCode() % numPartitions;
+            return Math.abs(key.hashCode()) % numPartitions;
         }
 
     }

@@ -25,10 +25,10 @@ public class Constants {
     public static final String JOB_PROB_WITH_SORT = "JOB_PROB_WITH_SORT";
 
     // output directories names
-    public static final String OCC_1_GRAMS_OUTPUT = "mini_counter_1_grams";
-    public static final String OCC_2_GRAMS_OUTPUT = "mini_counter_2_grams";
-    public static final String OCC_3_GRAMS_OUTPUT = "mini_counter_3_grams";
-    public static final String WORD_COUNT_C0_OUTPUT = "word_count_C0";
+    public static final String OCC_1_GRAMS_OUTPUT = "counter_1_grams";
+    public static final String OCC_2_GRAMS_OUTPUT = "counter_2_grams";
+    public static final String OCC_3_GRAMS_OUTPUT = "counter_3_grams";
+    public static final String WORD_COUNT_C0_OUTPUT = "word_count_c0";
     public static final String JOIN_OUTPUT = "join";
     public static final String JOIN_OUTPUT1 = "join1";
     public static final String JOIN_OUTPUT2 = "join2";

@@ -39,9 +39,9 @@ public class Main {
         Constants.printDebug("jobFlowConfig jar step");
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
-                .withInstanceCount(4) //TODO 4
-                .withMasterInstanceType(InstanceType.M1Large.toString()) //TODO Large
-                .withSlaveInstanceType(InstanceType.M1Large.toString()) //TODO Large
+                .withInstanceCount(4)
+                .withMasterInstanceType(InstanceType.M1Medium.toString())
+                .withSlaveInstanceType(InstanceType.M1Medium.toString())
                 .withHadoopVersion("2.6.0").withEc2KeyName(Constants.MY_KEY)
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));

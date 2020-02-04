@@ -96,7 +96,7 @@ JOB_JOIN_C2
 <br/>		Reduce input records=
 <br/>		Reduce output records=
     
-    -------------------------------------------
+-------------------------------------------
 
 JOB_JOIN_C0
 <br/>		Map input records=
@@ -104,7 +104,7 @@ JOB_JOIN_C0
 <br/>		Reduce input records=
 <br/>		Reduce output records=
     
-    -------------------------------------------
+-------------------------------------------
 
 JOB_PROB_WITH_SORT
 <br/>		Map input records=
@@ -112,7 +112,7 @@ JOB_PROB_WITH_SORT
 <br/>		Reduce input records=
 <br/>		Reduce output records=
 
-    -------------------------------------------
+-------------------------------------------
     
     
 _Master instance type:_ M1Large

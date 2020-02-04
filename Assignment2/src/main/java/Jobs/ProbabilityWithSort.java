@@ -70,7 +70,7 @@ public class ProbabilityWithSort {
 
         @Override
         public int getPartition(ProbabilityKey key, DoubleWritable value, int numPartitions) {
-            return key.getW1_w2_w3().hashCode() % numPartitions;
+            return Math.abs(key.getW1_w2_w3().hashCode()) % numPartitions;
         }
     }
 
@@ -86,13 +86,10 @@ public class ProbabilityWithSort {
         job.setMapperClass(MapClass.class);
         job.setPartitionerClass(PartitionerClass.class);
         job.setReducerClass(ReduceClass.class);
-
         job.setMapOutputKeyClass(ProbabilityKey.class);
         job.setMapOutputValueClass(DoubleWritable.class);
-
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(DoubleWritable.class);
-
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputDirName));
 

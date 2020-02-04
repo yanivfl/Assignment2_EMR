@@ -36,8 +36,7 @@ public class MapReduceMain {
                 if (!jobControl.getFailedJobList().isEmpty()) {
                     throw new RuntimeException("at least 1 job failed: " + jobControl.getFailedJobList().toString());
                 }
-                Constants.printDebug("Waiting");
-                Thread.sleep(2000);
+                Thread.sleep(6000);
             }
 
             Constants.printDebug("successful jobs so far: " + jobControl.getSuccessfulJobList().toString());

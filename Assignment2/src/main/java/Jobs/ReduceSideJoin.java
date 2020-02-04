@@ -70,7 +70,7 @@ public class ReduceSideJoin {
         // ensure that keys with same key are directed to the same reducer
         @Override
         public int getPartition(TaggedKey key, TaggedValue value, int numPartitions) {
-            return key.getKey().hashCode() % numPartitions;
+            return Math.abs(key.getKey().hashCode()) % numPartitions;
         }
     }
 

@@ -40,8 +40,8 @@ public class Main {
 
         JobFlowInstancesConfig instances = new JobFlowInstancesConfig()
                 .withInstanceCount(4)
-                .withMasterInstanceType(InstanceType.M1Medium.toString())
-                .withSlaveInstanceType(InstanceType.M1Medium.toString())
+                .withMasterInstanceType(InstanceType.M1Large.toString())
+                .withSlaveInstanceType(InstanceType.M1Large.toString())
                 .withHadoopVersion("2.6.0").withEc2KeyName(Constants.MY_KEY)
                 .withKeepJobFlowAliveWhenNoSteps(false)
                 .withPlacement(new PlacementType("us-east-1a"));

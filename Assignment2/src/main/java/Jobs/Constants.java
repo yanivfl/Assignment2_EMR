@@ -57,16 +57,10 @@ public class Constants {
         return S3 + OUTPUT_BUCKET_NAME + "/" + fileName;
     }
 
-    public static String getS3INPUTPath(String fileName) {
-        return S3 + INPUT_BUCKET_NAME + "/" + fileName;
-    }
-
-
     // tags
     public static final Text TAG_1_OCC = new Text("1");
     public static final Text TAG_2_OCC = new Text("2");
     public static final Text TAG_3_OCC = new Text("3");
-
 
     public static final int W1_W2_W3_IDX = 0;
     public static final int N3_IDX = 1;
@@ -75,7 +69,6 @@ public class Constants {
     public static final int C1_IDX = 4;
     public static final int C2_IDX = 5;
     public static final int C0_IDX = 6;
-
 
     /* If there is an output folder, delete it */
     public static void clearOutput(String path) {
@@ -90,7 +83,6 @@ public class Constants {
 //        }
     }
 
-
     final static boolean isDebug = true;
 
     public static void printDebug(String str) {
@@ -98,5 +90,4 @@ public class Constants {
             System.out.println(str);
         }
     }
-
 }

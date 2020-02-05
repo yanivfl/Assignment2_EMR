@@ -9,11 +9,15 @@ import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClient;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClientBuilder;
 import com.amazonaws.services.elasticmapreduce.model.*;
 import com.google.inject.internal.cglib.core.$Constants;
+import handlers.S3Handler;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         AmazonElasticMapReduce mapReduce = AmazonElasticMapReduceClientBuilder.standard()
                 .withRegion("us-east-1")
                 .build();

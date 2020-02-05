@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import InputFormats.*;
+import handlers.S3Handler;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -35,23 +36,24 @@ public class MapSideJoin {
         @Override
         protected void setup(Context context) throws IOException,
                 InterruptedException {
-            setupOrderHashMap(new Path(Constants.WORD_COUNT_C0_OUTPUT), context); //TODO
+            setupOrderHashMap();
         }
 
-        private void setupOrderHashMap(Path filePath, Context context)
+        private void setupOrderHashMap()
                 throws IOException {
 
             String strLineRead = "";
 
             try {
-                brReader = new BufferedReader(new FileReader(filePath.toString()));
+                S3Handler s3 = new S3Handler(false);
+                String key = Constants.WORD_COUNT_C0_OUTPUT + "/part-r-00001";
+                BufferedReader brReader = s3.downloadFile(Constants.OUTPUT_BUCKET_NAME, key );
 
                 while ((strLineRead = brReader.readLine()) != null) {
                     String c0[] = strLineRead.split("\t");
                     if (c0.length < 2) {
                         Constants.printDebug("MapSideJoin - setupOrderHashMap input is wrong c0 is:" + strLineRead);
                     }
-
                     C0_data.put(c0[0],c0[1]);
                 }
 

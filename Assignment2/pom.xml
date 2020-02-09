@@ -42,6 +42,22 @@
             <artifactId>hadoop-client</artifactId>
             <version>2.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>3.1.1</version>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <property>
+            <name>fs.s3n.impl</name>
+            <value>org.apache.hadoop.fs.s3native.NativeS3FileSystem</value>
+        </property>
+        <property>
+            <name>fs.s3.impl</name>
+            <value>org.apache.hadoop.fs.s3.S3FileSystem</value>
+        </property>
+    </properties>
 
 </project>

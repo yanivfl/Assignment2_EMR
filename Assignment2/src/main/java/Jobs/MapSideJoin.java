@@ -1,11 +1,11 @@
 package Jobs;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 import InputFormats.*;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.s3.transfer.MultipleFileDownload;
+import com.amazonaws.services.s3.transfer.TransferManager;
 import handlers.S3Handler;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
@@ -28,45 +28,67 @@ import org.apache.hadoop.util.ToolRunner;
 
 public class MapSideJoin {
 
+
+
     public static class MapSideJoinMapper extends Mapper<LongWritable, Text, Text, Text> {
 
-        private HashMap<String, String> C0_data = new HashMap<String, String>();
-        private BufferedReader brReader;
+        private  static HashMap<String, String> C0_data = new HashMap<String, String>();
 
-        @Override
-        protected void setup(Context context) throws IOException,
-                InterruptedException {
-            setupOrderHashMap();
+        public static void listFilesForFolder(final File folder) throws Exception {
+            for (final File fileEntry : folder.listFiles()) {
+                if (fileEntry.isDirectory()) {
+                    continue;
+                } else {
+                    readFile(fileEntry);
+                }
+            }
         }
 
-        private void setupOrderHashMap()
-                throws IOException {
+        public static void readFile(File file) throws Exception {
 
-            String strLineRead = "";
+            BufferedReader br = new BufferedReader(new FileReader(file));
 
-            try {
-                S3Handler s3 = new S3Handler(true);
-                String key = Constants.WORD_COUNT_C0_OUTPUT + "/part-r-00001";
-                BufferedReader brReader = s3.downloadFile(Constants.OUTPUT_BUCKET_NAME, key );
+            String str;
+            while ((str = br.readLine()) != null){
+                System.out.println(str);
+                String c0[] = str.split("\t");
+                if (c0.length < 2) {
+                    Constants.printDebug("MapSideJoin - setupOrderHashMap input is wrong c0 is:" + str);
+                }
+                C0_data.put(c0[0],c0[1]);
+            }
+        }
 
-                while ((strLineRead = brReader.readLine()) != null) {
-                    String c0[] = strLineRead.split("\t");
-                    if (c0.length < 2) {
-                        Constants.printDebug("MapSideJoin - setupOrderHashMap input is wrong c0 is:" + strLineRead);
+        public static void getC0_From_S3() throws Exception {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    TransferManager transferManager = new TransferManager(new DefaultAWSCredentialsProviderChain());
+                    File dir = new File(Constants.LOCAL_WORD_COUNT_C0_OUTPUT);
+
+                    MultipleFileDownload download =  transferManager.downloadDirectory(Constants.OUTPUT_BUCKET_NAME , Constants.WORD_COUNT_C0_OUTPUT, dir);
+                    try {
+                        download.waitForCompletion();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    C0_data.put(c0[0],c0[1]);
                 }
+            }, "jc");
+            t.setDaemon(true);
+            t.start();
+            t.join();
 
+            final File folder = new File(Constants.LOCAL_WORD_COUNT_C0_OUTPUT + "/" +Constants.WORD_COUNT_C0_OUTPUT);
+            listFilesForFolder(folder);
+            System.out.println(C0_data);
+        }
 
-            } catch (FileNotFoundException e) {
+        @Override
+        protected void setup(Context context) {
+            try {
+                getC0_From_S3();
+            } catch (Exception e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                if (brReader != null) {
-                    brReader.close();
-                }
-
             }
         }
 

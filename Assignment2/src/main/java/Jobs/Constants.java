@@ -29,6 +29,7 @@ public class Constants {
     public static final String OCC_2_GRAMS_OUTPUT = "counter_2_grams";
     public static final String OCC_3_GRAMS_OUTPUT = "counter_3_grams";
     public static final String WORD_COUNT_C0_OUTPUT = "word_count_c0";
+    public static final String LOCAL_WORD_COUNT_C0_OUTPUT = "local_word_count_c0";
     public static final String JOIN_OUTPUT = "join";
     public static final String JOIN_OUTPUT1 = "join1";
     public static final String JOIN_OUTPUT2 = "join2";

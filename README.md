@@ -5,22 +5,8 @@
 #### Yuval Lahav (lahavyuv) 205689110
 
 <br/><br/>
-## Running Instructions:
-1. Create a pair key (AWS) with the name: "my_key.pem" 
-2. Open a 2 bucket in your S3, one for input and another for the output
-3. Change in the Assignment on the Constant file the following variables:
- * INPUT_BUCKET_NAME
- * OUTPUT_BUCKET_NAME
- * MY_JAR_NAME
-4. Create a jar from the assignment and upload it to the input bucket in S3 you created
-5. Run the java command from the assignment:
-"java -jar Assignment2.jar"
-
-
-<br/><br/>
 ## Link to output file
-TODO
-_note_: If you followed the instructions, the file should appear in your output bucket under the name: final_output
+https://s3.console.aws.amazon.com/s3/buckets/dsps-201-assignment2-yaniv-yuval-output/final_output/?region=us-east-1&tab=overview
  
 
 <br/><br/>
@@ -120,3 +106,18 @@ _Master instance type:_ M1Large
 _Slave instance type:_ M1Large
 
 _Number of instances:_ 5 slaves (6 instance)
+
+
+<br/><br/>
+## Running Instructions:
+1. Create a pair key (AWS) with the name: "my_key.pem" 
+2. Open 2 buckets in your S3, one for input and another for the output
+3. Change in the Assignment on the Constant file the following variables:
+ * INPUT_BUCKET_NAME
+ * OUTPUT_BUCKET_NAME
+ * MY_JAR_NAME
+4. Create a jar from the assignment and upload it to the input bucket in S3 you created
+5. Run the java command from the assignment:
+"java -jar Assignment2.jar"
+_note_: If you followed the instructions, the file should appear in your output bucket under the name: final_output
+

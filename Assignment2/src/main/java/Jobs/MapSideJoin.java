@@ -45,7 +45,7 @@ public class MapSideJoin {
             String strLineRead = "";
 
             try {
-                S3Handler s3 = new S3Handler(false);
+                S3Handler s3 = new S3Handler(true);
                 String key = Constants.WORD_COUNT_C0_OUTPUT + "/part-r-00001";
                 BufferedReader brReader = s3.downloadFile(Constants.OUTPUT_BUCKET_NAME, key );
 

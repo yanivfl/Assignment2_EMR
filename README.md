@@ -6,7 +6,7 @@
 
 <br/><br/>
 ## Running Instructions:
-1. Create a pair key (AWS) with the name: "YuvalKeyPair.pem" 
+1. Create a pair key (AWS) with the name: "my_key.pem" 
 2. Open a 2 bucket in your S3, one for input and another for the output
 3. Change in the Assignment on the Constant file the following variables:
  * INPUT_BUCKET_NAME
